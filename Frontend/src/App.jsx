@@ -5,6 +5,8 @@ import './App.css'
 import SignUpPage from './pages/SignUp'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import AppLayout from './AppLayout'
+import Login from './pages/Login'
+import UpdateProfilePicture from './pages/UpdateProfilePicture'
 
 function App() {
   const router = createBrowserRouter([
@@ -15,6 +17,14 @@ function App() {
         {
           path : "/signup",
           element : <SignUpPage />
+        },
+        {
+          path : "/login",
+          element : <Login />
+        },
+        {
+          path : "/update-profile",
+          element : <UpdateProfilePicture />
         }
       ]
     }

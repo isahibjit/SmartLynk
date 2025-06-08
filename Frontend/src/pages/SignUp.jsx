@@ -1,100 +1,76 @@
 import React from "react";
+import AuthImagePattern from "../Components/AuthImagePattern";
+import { RiChatSmileAiLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 const SignUpPage = () => {
   return (
-    <div
-      className="bg-slate-50"
-      style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}
-    >
-      <div className="relative flex flex-col  overflow-x-hidden group/design-root">
-        <div className="layout-container flex flex-col h-full grow">
-        
+    <div>
+      <div className="flex items-center justify-center min-h-screen  border-red-100  rounded-lg px-4">
+        <div className="card w-full max-w-xl shadow-xl">
+          <div className="card-body">
+            <RiChatSmileAiLine className="text-4xl mx-auto" />
+            <h2 className="text-3xl font-bold text-primary text-center">
+              Create your Account
+            </h2>
+            <p className="text-sm text-center text-base-content mt-2">
+              Get Started with your free account
+            </p>
 
-          <main className="flex flex-1 items-center justify-center py-12 sm:py-16 lg:py-20">
-            <div className="w-full max-w-md px-4 sm:px-6 space-y-8">
-              <div className="text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                  Create your Account
-                </h2>
-                <p className="mt-3 text-slate-600">
-                  Join ChatAI and start your AI-enhanced conversations.
-                </p>
-              </div>
+            <form className="form-control w-full space-y-2 mt-6">
+              <label className="label" htmlFor="name">
+                <span className="label-text">Name</span>
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Enter your name"
+                className="input input-bordered w-full"
+                required
+              />
 
-              <form className="space-y-6">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-slate-700"
-                  >
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    placeholder="Enter your name"
-                    className="form-input mt-1 block w-full rounded-lg border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500"
-                  />
-                </div>
+              <label className="label" htmlFor="email">
+                <span className="label-text">Email Address</span>
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                className="input input-bordered w-full"
+                required
+              />
 
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-slate-700"
-                  >
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    placeholder="Enter your email"
-                    className="form-input mt-1 block w-full rounded-lg border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500"
-                  />
-                </div>
+              <label className="label" htmlFor="password">
+                <span className="label-text">Password</span>
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+                className="input input-bordered w-full"
+                required
+              />
 
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-slate-700"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    required
-                    placeholder="Enter your password"
-                    className="form-input mt-1 block w-full rounded-lg border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500"
-                  />
-                </div>
+              <button className="btn btn-primary mt-4 w-full" type="submit">
+                Sign Up
+              </button>
+            </form>
 
-                <div>
-                  <button
-                    type="submit"
-                    className="flex w-full justify-center rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                  >
-                    Sign up
-                  </button>
-                </div>
-              </form>
-
-              <p className="mt-8 text-center text-sm text-slate-600">
-                Already have an account?{" "}
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:text-blue-500 hover:underline"
-                >
-                  Log in
-                </a>
-              </p>
-            </div>
-          </main>
+            <p className="text-sm text-center mt-6">
+              Already have an account?{" "}
+              <Link to="/login" className="link link-primary">
+                Log in
+              </Link>
+            </p>
+          </div>
         </div>
+        <AuthImagePattern
+          title="Join our community"
+          subtitle="Connect with friends, share moments, and stay in touch with your loved ones."
+        />
       </div>
     </div>
   );
