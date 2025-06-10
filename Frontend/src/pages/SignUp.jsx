@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import AuthImagePattern from "../Components/AuthImagePattern";
 import { RiChatSmileAiLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { signUp } from "../features/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { signUp } from "../features/auth/authSlice.js";
 
 const SignUpPage = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const { isSigningUp } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -22,8 +23,7 @@ const SignUpPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log("Full Data Submitted");
-      dispatch(signUp(formData))
+      dispatch(signUp(formData));
     }
   };
   const handleChange = (e) => {
@@ -118,7 +118,14 @@ const SignUpPage = () => {
                 <span className="error-msg">{errors.password}</span>
               </div>
               <button className="btn btn-primary mt-4 w-full" type="submit">
-                Sign Up
+                {!isSigningUp ? (
+                  <span>Sign Up</span>
+                ) : (
+                  <img
+                    src="https://raw.githubusercontent.com/n3r4zzurr0/svg-spinners/main/preview/90-ring-with-bg-white-36.svg"
+                    alt="loading animation"
+                  />
+                )}
               </button>
             </form>
 

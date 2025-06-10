@@ -17,9 +17,4 @@ export const signUpService  = async(formData,thunkApi)=>{
     } catch (error) {
         return thunkApi.rejectWithValue(error.response.data.message || "Couldn't Signup")
     }
-    // try {
-    //     const response = await axiosInstance.post("/signup")
-    // } catch (error) {
-        
-    // }
 }
