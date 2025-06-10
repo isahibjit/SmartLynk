@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import AuthImagePattern from "../Components/AuthImagePattern";
 import { RiChatSmileAiLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { signUp } from "../features/authSlice";
 
 const SignUpPage = () => {
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -20,6 +23,7 @@ const SignUpPage = () => {
     e.preventDefault();
     if (validate()) {
       console.log("Full Data Submitted");
+      dispatch(signUp(formData))
     }
   };
   const handleChange = (e) => {

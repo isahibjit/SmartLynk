@@ -10,12 +10,12 @@ export const checkAuthService = async (_, thunkApi) => {
     }
 }
 
-export const signUpService  = async(formData)=>{
+export const signUpService  = async(formData,thunkApi)=>{
     try {
-        console.log(formData)
-        return formData
+        const response = await axiosInstance.post("/auth/signup",formData)
+        return response.data
     } catch (error) {
-        
+        return thunkApi.rejectWithValue(error.response.data.message || "Couldn't Signup")
     }
     // try {
     //     const response = await axiosInstance.post("/signup")
