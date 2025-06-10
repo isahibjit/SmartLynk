@@ -25,5 +25,7 @@ export const authSlice = createSlice({
             state.isCheckingAuth = false;
         })
     }
-    
+
 })
+
+export default authSlice.reducer
