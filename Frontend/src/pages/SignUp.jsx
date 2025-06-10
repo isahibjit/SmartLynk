@@ -32,19 +32,21 @@ const SignUpPage = () => {
   };
 
   const validate = () => {
+    const errors = {};
     if (!formData || formData.fullname.length < 3) {
-      setErrors((prev) => ({ ...prev, fullname: "Name cannot be this short" }));
+      errors.fullname = "Name cannot be this short";
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email || !emailRegex.test(formData.email)) {
-      setErrors((prev)=>({...prev,email : "Enter a valid email address"}))
+      errors.email = "Enter a valid email address";
     }
     if (!formData || formData.password.length < 6) {
-      setErrors((prev) => ({
-        ...prev,
-        password: "Password must be at least 6 characters ",
-      }));
+      errors.password = "Password must be at least 6 characters";
     }
+
+    setErrors((prev) => ({ ...prev, ...errors }));
+
+    return Object.keys(errors).length === 0;
   };
 
   return (
