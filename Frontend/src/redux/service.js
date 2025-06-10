@@ -1,6 +1,7 @@
-import { axiosInstance } from "../lib/axios"
 
-export const checkAuth = async (_, thunkApi) => {
+import { axiosInstance } from "../lib/axios.js"
+
+export const checkAuthService = async (_, thunkApi) => {
     try {
         const response = await axiosInstance.get("/auth/check")
         return response.data
@@ -9,10 +10,16 @@ export const checkAuth = async (_, thunkApi) => {
     }
 }
 
-export const signUp  = async(formData)=>{
+export const signUpService  = async(formData)=>{
     try {
-        const response = await axiosInstance.post("/signup")
+        console.log(formData)
+        return formData
     } catch (error) {
         
     }
+    // try {
+    //     const response = await axiosInstance.post("/signup")
+    // } catch (error) {
+        
+    // }
 }

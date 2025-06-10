@@ -1,6 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { checkAuth } from "../redux/service.js";
-
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { checkAuthService } from "../redux/service.js";
+import { signUpService } from "../redux/service.js";
+export const checkAuth = createAsyncThunk('auth/checkAuth',checkAuthService)
+export const signUp  = createAsyncThunk('auth/signUp',signUpService)
 export const authSlice = createSlice({
     name : 'auth',
     initialState : {
@@ -20,10 +22,21 @@ export const authSlice = createSlice({
             state.authUser = action.payload
             state.isCheckingAuth = false;
         })
-        .addCase(checkAuth.rejected,(state,action)=>{
+        .addCase(checkAuth.rejected,(state)=>{
             state.authUser = null
             state.isCheckingAuth = false;
         })
+        .addCase(signUp.pending, (state)=>{
+            state.isSigningUp = true;
+        })
+        .addCase(signUp.fulfilled,(state,action)=>{
+            state.authUser = action.payload
+            state.isSigningUp = false
+        })
+        .addCase(signUp.rejected,(state)=>{
+            state.isSigningUp = false;
+        })
+
     }
 
 })
