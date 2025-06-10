@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+.error-msg{
+    @apply text-red-500
+}

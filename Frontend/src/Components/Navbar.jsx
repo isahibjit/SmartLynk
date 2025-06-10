@@ -16,7 +16,7 @@ const Navbar = () => {
         {/* Settings Button */}
         <button
               aria-label="Settings"
-              class="flex items-center justify-center rounded-full h-10 w-10 bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-700 transition-colors"
+              className="flex items-center justify-center rounded-full h-10 w-10 bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-700 transition-colors"
             >
               <svg
                 fill="currentColor"

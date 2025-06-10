@@ -8,3 +8,11 @@ export const checkAuth = async (_, thunkApi) => {
         return thunkApi.rejectWithValue(error.response.data.message || "User is not Authorized")
     }
 }
+
+export const signUp  = async(formData)=>{
+    try {
+        const response = await axiosInstance.post("/signup")
+    } catch (error) {
+        
+    }
+}
