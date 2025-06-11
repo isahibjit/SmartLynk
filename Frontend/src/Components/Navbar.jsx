@@ -3,6 +3,7 @@ import logo from "/logo.png";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../features/auth/authSlice";
+import profileImg from "../assets/profile-holder.webp"
 import toast from "react-hot-toast";
 const Navbar = () => {
   const { authUser,isSigningOut } = useSelector((state) => state.auth);
@@ -52,9 +53,9 @@ const Navbar = () => {
               className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
             >
               <li>
-                <a 
+                <button 
                 onClick={handleLogout}
-                className="text-lg text-primary border border-black">
+                className="text-lg text-primary btn border border-black">
                   {!isSigningOut ? (
                   <span>Logout</span>
                 ) : (
@@ -63,10 +64,10 @@ const Navbar = () => {
                     alt="loading animation"
                   />
                 )}
-                </a>
+                </button>
               </li>
               <li className="my-2">
-                <a className="text-lg text-secondary border border-black">
+                <a className="text-lg btn  text-secondary border border-black">
                   Themes
                 </a>
               </li>
@@ -79,8 +80,7 @@ const Navbar = () => {
           <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
             <Link to="/update-profile">
               <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO_XIUSATfo7OfPkp6af9pB88MBFGzDdiazU6DGK3rc5XFCZcdICPkDMbXVW-hEQzNd0jzK5rzcWy6rHOztGL4o-bsGa2qhr4HsC23QJ-NzTkMhKKes9oE5xc24aqtEX5OB5Gmlw8BwKnNiQxZaqIh3IZezyHHAlFQUJsX_PfS8HKMGWqwbgfiPIqt6OmlVK9rr1Wr-9KHESDmWNAXVeoZNIlf5d_O3kJznui-Z1o2Te8hadRX9SH5tC06c7S2vXM600GawXpyNIg"
-                alt="User Avatar"
+                src={authUser?.profilePic || profileImg}
               />
             </Link>
           </div>
