@@ -4,6 +4,7 @@ import { RiChatSmileAiLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../features/auth/authSlice.js";
+import toast from "react-hot-toast";
 
 const SignUpPage = () => {
   const dispatch = useDispatch();
@@ -20,10 +21,15 @@ const SignUpPage = () => {
     password: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (validate()) {
-      dispatch(signUp(formData));
+      try {
+       await dispatch(signUp(formData)).unwrap();
+      } catch (error) {
+        toast.error(error)
+      }
+
     }
   };
   const handleChange = (e) => {

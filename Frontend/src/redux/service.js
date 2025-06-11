@@ -1,4 +1,5 @@
 
+import toast from "react-hot-toast"
 import { axiosInstance } from "../lib/axios.js"
 
 export const checkAuthService = async (_, thunkApi) => {
@@ -10,11 +11,29 @@ export const checkAuthService = async (_, thunkApi) => {
     }
 }
 
-export const signUpService  = async(formData,thunkApi)=>{
+export const signUpService = async (formData, thunkApi) => {
     try {
-        const response = await axiosInstance.post("/auth/signup",formData)
+        const response = await axiosInstance.post("/auth/signup", formData)
         return response.data
     } catch (error) {
         return thunkApi.rejectWithValue(error.response.data.message || "Couldn't Signup")
+    }
+}
+
+export const signInService = async (formData, thunkApi) => {
+    try {
+        const response = await axiosInstance.post("/auth/signin", formData)
+        return response.data
+    } catch (error) {
+        return thunkApi.rejectWithValue(error.response.data.message || "Couldn't Signin")
+    }
+}
+
+export const signOutService = async (_,thunkApi)=>{
+    try {
+        const response = await axiosInstance.post("/auth/signout")
+        return response.data
+    } catch (error) {
+        return thunkApi.rejectWithValue(error.response.data.message || "Couldn't Signout")
     }
 }

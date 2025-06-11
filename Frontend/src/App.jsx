@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import { Toaster } from "react-hot-toast";
 import SignUpPage from "./pages/SignUp";
 import {
   createBrowserRouter,
@@ -16,21 +17,21 @@ import { checkAuth } from "./features/auth/authSlice";
 import HomePage from "./pages/HomePage";
 
 function App() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { authUser, isSigningUp, isLogginIn, isCheckingAuth, onlineUsers } =
     useSelector((state) => state.auth);
-    useEffect(() => {
-      dispatch(checkAuth())
-    }, [authUser])
-    
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [checkAuth]);
+
   const router = createBrowserRouter([
     {
       path: "/",
       element: <AppLayout />,
       children: [
         {
-          path : "/",
-          element : authUser ? <HomePage /> : <Navigate to="/login" />
+          path: "/",
+          element: authUser ? <HomePage /> : <Navigate to="/login" />,
         },
         {
           path: "/signup",
@@ -42,7 +43,11 @@ function App() {
         },
         {
           path: "/update-profile",
-          element: authUser ?  <UpdateProfilePicture /> : <Navigate to="/login" />
+          element: authUser ? (
+            <UpdateProfilePicture />
+          ) : (
+            <Navigate to="/login" />
+          ),
         },
       ],
     },
@@ -50,6 +55,7 @@ function App() {
 
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
       <RouterProvider router={router} future={{ v7_startTransition: true }} />
     </>
   );

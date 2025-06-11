@@ -1,6 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const UpdateProfilePicture = () => {
+    const { authUser, isSigningUp, isLogginIn, isCheckingAuth, onlineUsers } =
+    useSelector((state) => state.auth);
+
   return (
     <div className="min-h-screen">
       <div className="flex flex-1 justify-center py-8 sm:py-12 px-4">
@@ -38,10 +42,10 @@ const UpdateProfilePicture = () => {
 
             <div className="text-center">
               <p className="text-slate-800 text-xl sm:text-2xl font-semibold leading-tight">
-                Sophia Clark
+                {authUser.fullname}
               </p>
               <p className="text-slate-500 text-sm sm:text-base font-normal">
-                sophia.clark@email.com
+                {authUser.email}
               </p>
             </div>
           </div>
