@@ -3,6 +3,7 @@ import logo from "/logo.png";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../features/auth/authSlice";
+import toast from "react-hot-toast";
 const Navbar = () => {
   const { authUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch()
