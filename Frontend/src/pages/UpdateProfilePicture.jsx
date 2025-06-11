@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
-
+import profileImg from "../assets/profile-holder.webp";
 const UpdateProfilePicture = () => {
-    const { authUser, isSigningUp, isLogginIn, isCheckingAuth, onlineUsers } =
+  const { authUser, isSigningUp, isLogginIn, isCheckingAuth, onlineUsers } =
     useSelector((state) => state.auth);
 
   return (
@@ -14,13 +14,12 @@ const UpdateProfilePicture = () => {
           </h1>
 
           <div className="flex flex-col items-center mb-8">
-            <div
-              className="relative bg-center bg-no-repeat aspect-square bg-cover rounded-full size-32 sm:size-36 mb-4 border-4 border-slate-200 shadow-md"
-              style={{
-                backgroundImage:
-                  'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDO_XIUSATfo7OfPkp6af9pB88MBFGzDdiazU6DGK3rc5XFCZcdICPkDMbXVW-hEQzNd0jzK5rzcWy6rHOztGL4o-bsGa2qhr4HsC23QJ-NzTkMhKKes9oE5xc24aqtEX5OB5Gmlw8BwKnNiQxZaqIh3IZezyHHAlFQUJsX_PfS8HKMGWqwbgfiPIqt6OmlVK9rr1Wr-9KHESDmWNAXVeoZNIlf5d_O3kJznui-Z1o2Te8hadRX9SH5tC06c7S2vXM600GawXpyNIg")',
-              }}
-            >
+            <div className="relative">
+              <img
+                className=" bg-center bg-no-repeat aspect-square bg-cover rounded-full size-32 sm:size-36 mb-4 border-4 border-slate-200 shadow-md"
+                src={authUser.profilePic || profileImg}
+                alt="profile image"
+              />
               <div className="absolute -bottom-2 -right-2 size-10 bg-[#0c7ff2] rounded-full flex items-center justify-center text-white shadow-md hover:bg-blue-600 transition-colors cursor-pointer">
                 <svg
                   className="lucide lucide-camera"
