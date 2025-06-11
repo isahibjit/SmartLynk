@@ -31,7 +31,7 @@ export const signInService = async (formData, thunkApi) => {
 
 export const signOutService = async (_,thunkApi)=>{
     try {
-        const response = await axiosInstance.post("/auth/signout")
+        const response = await axiosInstance.post("/auth/logout")
         return response.data
     } catch (error) {
         return thunkApi.rejectWithValue(error.response.data.message || "Couldn't Signout")

@@ -26,6 +26,7 @@ const SignUpPage = () => {
     if (validate()) {
       try {
        await dispatch(signUp(formData)).unwrap();
+         toast.success("Account Created Successfully!")
       } catch (error) {
         toast.error(error)
       }

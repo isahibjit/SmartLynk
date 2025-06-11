@@ -9,9 +9,9 @@ const Navbar = () => {
   const handleLogout = async()=>{
     try {
       await dispatch(signOut()).unwrap()
-
+       toast.success("Signed out Successfully!")
     } catch (error) {
-      
+      toast.error(error)
     }
   }
   return (
