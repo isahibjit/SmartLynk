@@ -8,8 +8,8 @@ const Navbar = () => {
   const dispatch = useDispatch()
   const handleLogout = async()=>{
     try {
-      const response = await dispatch(signOut()).unwrap()
-      
+      await dispatch(signOut()).unwrap()
+
     } catch (error) {
       
     }
