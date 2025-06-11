@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../features/auth/authSlice";
 import toast from "react-hot-toast";
 const Navbar = () => {
-  const { authUser } = useSelector((state) => state.auth);
+  const { authUser,isSigningOut } = useSelector((state) => state.auth);
   const dispatch = useDispatch()
   const handleLogout = async()=>{
     try {
@@ -55,7 +55,14 @@ const Navbar = () => {
                 <a 
                 onClick={handleLogout}
                 className="text-lg text-primary border border-black">
-                  Logout
+                  {!isSigningOut ? (
+                  <span>Logout</span>
+                ) : (
+                  <img
+                    src="https://raw.githubusercontent.com/n3r4zzurr0/svg-spinners/main/preview/90-ring-with-bg-white-36.svg"
+                    alt="loading animation"
+                  />
+                )}
                 </a>
               </li>
               <li className="my-2">
