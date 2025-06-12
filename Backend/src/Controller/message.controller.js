@@ -21,6 +21,8 @@ export const sendMessage = async (req, res) => {
         image : imageUrl
      })
      await newMessage.save()
+     // after saving it trigger the socket/io 
+
      res.status(200).json(newMessage)
    } catch (error) {
         console.log("Error in messageController",error)
