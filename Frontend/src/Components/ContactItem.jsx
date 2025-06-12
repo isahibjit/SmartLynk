@@ -111,7 +111,7 @@ const ContactItem = ({ contact, isActive, onClick }) => {
     <div className="avatar">
       <div className="w-12 rounded-full">
         <img
-          src={contact.avatar || profileImg}
+          src={contact.profilePic || profileImg}
           alt={`${contact.fullname}'s avatar`}
         />
       </div>
