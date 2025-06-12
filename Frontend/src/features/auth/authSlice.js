@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { checkAuthService, signInService, signOutService } from "../../redux/service.js";
+import { checkAuthService, signInService, signOutService, updateProfileService } from "../../redux/service.js";
 import { signUpService } from "../../redux/service.js";
 import toast from "react-hot-toast";
 export const checkAuth = createAsyncThunk('auth/checkAuth', checkAuthService)
 export const signUp = createAsyncThunk('auth/signup', signUpService)
 export const signIn = createAsyncThunk('/auth/signin', signInService)
-export const signOut = createAsyncThunk('/auth/signout',signOutService)
+export const signOut = createAsyncThunk('/auth/logout',signOutService)
+export const updateProfile = createAsyncThunk('/auth/update-profile',updateProfileService)
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
@@ -63,6 +65,16 @@ export const authSlice = createSlice({
             })
             .addCase(signOut.rejected,(state)=>{
                 state.isSigningOut = false
+            })
+
+            .addCase(updateProfile.pending,(state)=>{
+                state.isUpdatingProfile = true;
+            })
+            .addCase(updateProfile.fulfilled,(state)=>{
+                state.isUpdatingProfile = false;
+            })
+            .addCase(updateProfile.rejected,(state)=>{
+                state.isUpdatingProfile = false;
             })
     }
 

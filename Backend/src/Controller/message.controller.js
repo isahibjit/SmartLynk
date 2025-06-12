@@ -26,3 +26,7 @@ export const sendMessage = async (req, res) => {
         res.status(500).json({message : "Internal Server Error"})
    }
 }
+
+export const getUsersForSidebar = (req,res)=>{
+   // get their name, current message, profile image, last online
+}

@@ -84,15 +84,18 @@ export const updateProfile = async (req, res) => {
     try {
         const { profilePic } = req.body
         const userId = req.user._id
-
+        
+        if(profilePic === "") {
+                const uploadedUser = await User.findByIdAndUpdate(userId , { profilePic: "" }, { new: true })
+                return res.status(200).json(uploadedUser)
+        }
         if (!profilePic) return res.status(400).json({ message: "Profile image is required!" })
-            
         const updatedData = await cloudinary.uploader.upload(profilePic)
-        const uploadedUser = await User.findByIdAndUpdate({ userId }, { profilePic: updatedData.secure_url }, { new: true })
+        const uploadedUser = await User.findByIdAndUpdate(userId , { profilePic: updatedData.secure_url }, { new: true })
 
         res.status(200).json(uploadedUser)
     } catch (error) {
         console.log('Error at update profile in authController', error)
-        res.status(500).json({ message: "Internal Server Error", error: error.message })
+        res.status(500).json({ message: "Internal Server Error"})
     }
 }

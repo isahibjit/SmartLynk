@@ -37,3 +37,12 @@ export const signOutService = async (_,thunkApi)=>{
         return thunkApi.rejectWithValue(error.response.data.message || "Couldn't Signout")
     }
 }
+
+export const updateProfileService = async(profilePic,thunkApi)=>{
+    try {
+        const response = await axiosInstance.post("/auth/update-profile",{profilePic})
+        return response.data
+    } catch (error) {
+        return thunkApi.rejectWithValue(error.response.data.message || "Coudn't update the profile image")
+    }
+}
