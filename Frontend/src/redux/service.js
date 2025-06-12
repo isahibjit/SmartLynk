@@ -29,7 +29,7 @@ export const signInService = async (formData, thunkApi) => {
     }
 }
 
-export const signOutService = async (_,thunkApi)=>{
+export const signOutService = async (_, thunkApi) => {
     try {
         const response = await axiosInstance.post("/auth/logout")
         return response.data
@@ -38,11 +38,20 @@ export const signOutService = async (_,thunkApi)=>{
     }
 }
 
-export const updateProfileService = async(profilePic,thunkApi)=>{
+export const updateProfileService = async (profilePic, thunkApi) => {
     try {
-        const response = await axiosInstance.post("/auth/update-profile",{profilePic})
+        const response = await axiosInstance.post("/auth/update-profile", { profilePic })
         return response.data
     } catch (error) {
         return thunkApi.rejectWithValue(error.response.data.message || "Coudn't update the profile image")
+    }
+}
+
+export const getUsersForSidebarService = async (_,thunkApi) => {
+    try {
+        const response = await axiosInstance.get("/get-users");
+        return response.data
+    } catch (error) {
+        return thunkApi.rejectWithValue(error.response.message) || "Couldn't get the current users"
     }
 }

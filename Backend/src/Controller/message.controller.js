@@ -1,5 +1,6 @@
 import cloudinary from "../lib/cloudinary.js";
 import Message from "../models/message.model.js";
+import User from "../models/user.model.js";
 
 export const sendMessage = async (req, res) => {
    try {
@@ -27,6 +28,15 @@ export const sendMessage = async (req, res) => {
    }
 }
 
-export const getUsersForSidebar = (req,res)=>{
+export const getUsersForSidebar = async(req,res)=>{
    // get their name, current message, profile image, last online
+   try {
+      const loggedInUser = req.user._id;
+      // find users who's id is not equal to the loggedIn users id and we don't need a password 
+      const FilteredUsers = await User.find({_id : {$ne : loggedInUser}}).select("-password")
+      res.status(200).json(FilteredUsers)
+   } catch (error) {
+      console.log("Error in Message Controller ",error)
+      res.status(500).json({message : "Internal Error Occurred"})
+   }
 }
