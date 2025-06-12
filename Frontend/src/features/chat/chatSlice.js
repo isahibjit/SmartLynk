@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getUsersForSidebarService } from "../../../redux/service";
-const getUsersForSidebar = createAsyncThunk("/message/get-users",getUsersForSidebarService)
+import { getUsersForSidebarService } from "../../redux/service";
+export const getUsersForSidebar = createAsyncThunk("/message/get-users",getUsersForSidebarService)
 const chatSlice = createSlice({
     name : "chat",
     initialState : {

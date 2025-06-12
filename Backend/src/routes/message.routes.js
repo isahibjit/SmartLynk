@@ -5,5 +5,4 @@ const router = Router()
 //add the messages!
 router.post("/send:id",isAuthenticated,sendMessage)
 router.get("/get-users",isAuthenticated,getUsersForSidebar)
-
 export default router

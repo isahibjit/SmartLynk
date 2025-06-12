@@ -49,7 +49,7 @@ export const updateProfileService = async (profilePic, thunkApi) => {
 
 export const getUsersForSidebarService = async (_,thunkApi) => {
     try {
-        const response = await axiosInstance.get("/get-users");
+        const response = await axiosInstance.get("/message/get-users");
         return response.data
     } catch (error) {
         return thunkApi.rejectWithValue(error.response.message) || "Couldn't get the current users"
