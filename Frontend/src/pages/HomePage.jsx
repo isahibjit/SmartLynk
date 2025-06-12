@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ChatSidebar from "../Components/ChatSidebar";
 import ChatWindow from "../Components/ChatWindow";
-import { contactData } from "../Components/ContactItem";
+
 import { useDispatch, useSelector } from "react-redux";
 import {getUsersForSidebar} from "../features/chat/chatSlice.js"
 import toast from "react-hot-toast";
@@ -22,7 +22,7 @@ const ChatApp = () => {
     >
       <main className="flex-1 flex flex-row bg-white">
         <ChatSidebar
-          contacts={contactData}
+          contacts={users}
           activeChat={activeChat}
           onContactClick={setActiveChat}
         />
