@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 import ChatSidebar from "../Components/ChatSidebar";
 import ChatWindow from "../Components/ChatWindow";
-
+import ChatBox from "./ChatBox.jsx"
 import { useDispatch, useSelector } from "react-redux";
-import {getUsersForSidebar} from "../features/chat/chatSlice.js"
+import { getUsersForSidebar } from "../features/chat/chatSlice.js";
 import toast from "react-hot-toast";
 const ChatApp = () => {
-  const [activeChat, setActiveChat] = useState(null); 
-  const {users} = useSelector((state)=>state.chat)
-  console.log(users)
+  const [activeChat, setActiveChat] = useState(null);
+  const { users, selectedUser } = useSelector((state) => state.chat);
+  console.log(users);
   const dispatch = useDispatch();
-   useEffect(() => {
-     dispatch(getUsersForSidebar());
-   }, [getUsersForSidebar]);
- 
+  useEffect(() => {
+    dispatch(getUsersForSidebar());
+  }, [getUsersForSidebar]);
 
   return (
     <div
@@ -26,7 +25,7 @@ const ChatApp = () => {
           activeChat={activeChat}
           onContactClick={setActiveChat}
         />
-        <ChatWindow />
+        {selectedUser ? <ChatBox /> : <ChatWindow />}
       </main>
     </div>
   );

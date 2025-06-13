@@ -1,8 +1,10 @@
 import React from "react";
 import ContactItem from "./ContactItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {setSelectedUser} from "../features/chat/chatSlice.js"
 const ChatSidebar = ({activeChat, onContactClick }) => {
     const { users } = useSelector((state) => state.chat);
+    const dispatch = useDispatch()
   return (
     <div className="w-[420px] flex flex-col border-r border-base-300">
       <div className="p-6 border-b border-base-300">
@@ -29,13 +31,15 @@ const ChatSidebar = ({activeChat, onContactClick }) => {
           />
         </div>
       </div>
-      <div className="overflow-y-auto flex-1">
+      <div className="overflow-y-auto flex-1 ">
         {users.map((contact) => (
           <ContactItem
             key={contact._id}
             contact={contact}
             isActive={activeChat === contact._id}
-            onClick={() => onContactClick(contact._id)}
+            onClick={() => {
+              dispatch(setSelectedUser(contact))
+              onContactClick(contact._id)}}
           />
         ))}
       </div>

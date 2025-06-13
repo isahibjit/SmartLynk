@@ -10,6 +10,11 @@ const chatSlice = createSlice({
         isUserLoading : false,
         isMessageLoading : false,
     },
+    reducers : {
+        setSelectedUser : (state,action)=>{
+            state.selectedUser = action.payload;
+        }
+    },
     extraReducers : (builder)=>{
         builder
         .addCase(getUsersForSidebar.pending,(state)=>{
@@ -24,5 +29,5 @@ const chatSlice = createSlice({
         })
     }
 })
-
+export const {setSelectedUser} = chatSlice.actions
 export default chatSlice.reducer
