@@ -16,7 +16,7 @@ const ChatApp = () => {
 
   return (
     <div
-      className="relative flex size-full min-h-screen flex-row group/design-root "
+      className="relative flex size-full min-h-[75vh]flex-row group/design-root "
       style={{ fontFamily: "Inter, 'Noto Sans', sans-serif" }}
     >
       <main className="flex-1 flex flex-row bg-white">

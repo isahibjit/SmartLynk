@@ -6,7 +6,7 @@ const ChatSidebar = ({activeChat, onContactClick }) => {
     const { users } = useSelector((state) => state.chat);
     const dispatch = useDispatch()
   return (
-    <div className="w-[420px] flex flex-col border-r border-base-300">
+    <div className="w-[420px] md:flex hidden flex-col border-r border-base-300">
       <div className="p-6 border-b border-base-300">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Contacts</h2>
