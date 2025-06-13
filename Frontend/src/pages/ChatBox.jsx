@@ -95,7 +95,7 @@ const ChatBox = () => {
           </span>
           <span>Send</span>
         </button>
-        <button className="btn btn-primary">
+        <button className="btn btn-secondary">
           <span>
             <FaRobot />
           </span>
