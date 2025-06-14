@@ -47,8 +47,16 @@ export const getMessages = async (req, res) => {
    // get the messages, get the sender and receiver's id
    const myId = req.user._id
    const hisId = req.params.id
-   if (!senderId || !receiverId) {
+   if (!myId || !hisId) {
       return res.status(400).json({ message: "senderId and receiverId are required." });
    }
+   const messages = await Message.find({
+      $or: [
+         {senderId : myId},
+         {receiverId : hisId},
+         {receiverId : myId}
+      ]
+   }).sort({createdAt: 1}) // sort by time ascending (older messages first)
+   res.send(messages)
 
 }

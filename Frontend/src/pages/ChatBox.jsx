@@ -8,8 +8,11 @@ import { FaArrowLeft } from "react-icons/fa";
 import {
   setSelectedUser,
   setIsSelectedForMobile,
+  selectedUser,
+  sendMessage,
 } from "../features/chat/chatSlice";
 import { Image, Send, X } from "lucide-react";
+import toast from "react-hot-toast";
 
 const ChatBox = () => {
   const { selectedUser, isSelectedForMobile } = useSelector(
@@ -35,7 +38,17 @@ const ChatBox = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("formData is ", formData);
+    if (formData.text !== "") {
+      const { _id: id } = selectedUser;
+      const sendMessageData = { formData, id };
+      try {
+        await dispatch(sendMessage(sendMessageData)).unwrap();
+        toast.success("Message Send Successfully");
+      } catch (error) {
+        toast.error("Message not send !");
+        console.log(error);
+      }
+    }
   };
 
   return (
@@ -80,13 +93,16 @@ const ChatBox = () => {
             <time className="text-xs opacity-50">12:45</time>
           </div>
           {/* shouldn't come from formData but when you receive it ! */}
-          <div className="chat-bubble"> 
-            {formData.selectedImage &&  (<div className="w-[150px] h-[150px] left-[10px] avatar rounded-lg ">
-            <img
-              src={formData.selectedImage}
-              alt={`Your selected Image`}
-              className="rounded"
-            /></div>)}
+          <div className="chat-bubble">
+            {formData.selectedImage && (
+              <div className="w-[150px] h-[150px] left-[10px] avatar rounded-lg ">
+                <img
+                  src={formData.selectedImage}
+                  alt={`Your selected Image`}
+                  className="rounded"
+                />
+              </div>
+            )}
             <span className="block">You were the Chosen One!</span>
           </div>
           <div className="chat-footer opacity-50">Delivered</div>
@@ -105,12 +121,15 @@ const ChatBox = () => {
             {authUser.fullname}
             <time className="text-xs opacity-50">12:46</time>
           </div>
-          {formData.selectedImage &&  (<div className="w-[150px] h-[150px] left-[10px] avatar rounded-lg ">
-            <img
-              src={formData.selectedImage}
-              alt={`Your selected Image`}
-              className="rounded"
-            /></div>)}
+          {formData.selectedImage && (
+            <div className="w-[150px] h-[150px] left-[10px] avatar rounded-lg ">
+              <img
+                src={formData.selectedImage}
+                alt={`Your selected Image`}
+                className="rounded"
+              />
+            </div>
+          )}
           <div className="chat-bubble">I hate you!</div>
           <div className="chat-footer opacity-50">Seen at 12:46</div>
         </div>

@@ -38,6 +38,8 @@ export const signOutService = async (_, thunkApi) => {
     }
 }
 
+// message api services
+
 export const updateProfileService = async (profilePic, thunkApi) => {
     try {
         const response = await axiosInstance.post("/auth/update-profile", { profilePic })
@@ -47,11 +49,29 @@ export const updateProfileService = async (profilePic, thunkApi) => {
     }
 }
 
-export const getUsersForSidebarService = async (_,thunkApi) => {
+export const getUsersForSidebarService = async (_, thunkApi) => {
     try {
         const response = await axiosInstance.get("/message/get-users");
         return response.data
     } catch (error) {
         return thunkApi.rejectWithValue(error.response.message) || "Couldn't get the current users"
+    }
+}
+
+export const sendMessageService = async (sendMessageData, thunkApi) => {
+    try {
+        const { formData, id } = sendMessageData
+        const response = await axiosInstance.post(`/message/send/${id}`, formData)
+        return response.data;
+    } catch (error) {
+        return thunkApi.rejectWithValue(error.response.message)
+    }
+}
+export const getMessagesService = async(id,thunkApi)=>{
+    try {
+        const response = await axiosInstance.get(`message/get/${id}`)
+        return response.data
+    } catch (error) {
+        return thunkApi.rejectWithValue(error.response.message)
     }
 }
