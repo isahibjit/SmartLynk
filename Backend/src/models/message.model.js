@@ -11,6 +11,11 @@ const messageSchema = mongoose.Schema({
         ref: "User",
         required: true,
     },
+    seen : {
+        type : Boolean,
+        default : false,   
+    }
+    ,
     text: {
         type: String,
     },
@@ -19,7 +24,7 @@ const messageSchema = mongoose.Schema({
     },
 
 },
-    { timestamp: true }
+    { timestamps: true }
 )
 const Message = mongoose.model("Message",messageSchema)
 

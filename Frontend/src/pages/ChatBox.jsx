@@ -5,20 +5,26 @@ import { FaRobot } from "react-icons/fa";
 import { RiImageAddFill } from "react-icons/ri";
 import { IoSend } from "react-icons/io5";
 import { FaArrowLeft } from "react-icons/fa";
-import { setSelectedUser,setIsSelectedForMobile } from "../features/chat/chatSlice";
+import {
+  setSelectedUser,
+  setIsSelectedForMobile,
+} from "../features/chat/chatSlice";
 
 const ChatBox = () => {
-  const { selectedUser,isSelectedForMobile } = useSelector((state) => state.chat);
+  const { selectedUser, isSelectedForMobile } = useSelector(
+    (state) => state.chat
+  );
   const { authUser } = useSelector((state) => state.auth);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   return (
     <div className="flex flex-col w-full  h-screen bg-white font-sans md:px-8   ">
       {/* Header */}
       {/* Chat Title */}
       <div className="px-8 py-5 border border-gray-200 bg-slate-100 rounded-md flex space-x-2 justify-center items-center sticky top-0">
         <button
-        onClick={()=>dispatch(setSelectedUser(null))}
-        className="text-2xl absolute hover:bg-gray-300 rounded-lg  left-[20px] p-2 cursor-pointer transition-all md:hidden block mr-8 duration-200">
+          onClick={() => dispatch(setSelectedUser(null))}
+          className="text-2xl absolute hover:bg-gray-300 rounded-lg  left-[20px] p-2 cursor-pointer transition-all md:hidden block mr-8 duration-200"
+        >
           <FaArrowLeft />
         </button>
 
@@ -36,7 +42,7 @@ const ChatBox = () => {
       </div>
 
       {/* Messages */}
-
+    {/* YOu'll need to run a loop here  */}
       <div className="flex-1 overflow-y-auto mt-3 px-2">
         <div className="chat chat-start ">
           <div className="chat-image avatar">

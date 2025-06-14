@@ -42,3 +42,7 @@ export const getUsersForSidebar = async(req,res)=>{
       res.status(500).json({message : "Internal Error Occurred"})
    }
 }
+
+export const getMessages = async(req,res)=>{
+   // get the 
+}
