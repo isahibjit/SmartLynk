@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import profileImg from "../assets/profile-holder.webp";
 import { FaRobot } from "react-icons/fa";
@@ -9,6 +9,7 @@ import {
   setSelectedUser,
   setIsSelectedForMobile,
 } from "../features/chat/chatSlice";
+import { Image, Send, X } from "lucide-react";
 
 const ChatBox = () => {
   const { selectedUser, isSelectedForMobile } = useSelector(
@@ -16,6 +17,27 @@ const ChatBox = () => {
   );
   const { authUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState({
+    text: "",
+    selectedImage: null,
+  });
+  const handleNewImage = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = async () => {
+      const base64 = reader.result;
+      setFormData((prev) => ({ ...prev, selectedImage: base64 }));
+    };
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("formData is ",formData)
+  };
+
   return (
     <div className="flex flex-col w-full  h-screen bg-white font-sans md:px-8   ">
       {/* Header */}
@@ -42,7 +64,7 @@ const ChatBox = () => {
       </div>
 
       {/* Messages */}
-    {/* YOu'll need to run a loop here  */}
+      {/* YOu'll need to run a loop here  */}
       <div className="flex-1 overflow-y-auto mt-3 px-2">
         <div className="chat chat-start ">
           <div className="chat-image avatar">
@@ -79,17 +101,37 @@ const ChatBox = () => {
         </div>
       </div>
       {/* Input Box */}
-      <div className="flex  gap-3 my-2 sticky bottom-2 px-2 pt-3">
+
+      <form
+        onSubmit={handleSubmit}
+        className="flex  gap-3 my-2 sticky bottom-2 px-2 pt-3 relative"
+      >
         <input
           type="text"
           placeholder="Send Message"
+          value={formData.text}
+          name="text"
+          onChange={(e) => {
+            const { name, value } = e.target;
+            setFormData((prev) => ({ ...prev, [name]: value }));
+          }}
           className="flex-grow border border-gray-300 rounded-md py-2 px-3 text-md outline-none w-full"
         />
         <div className="flex gap-2">
-          <button className="btn btn-accent">
+          <label htmlFor="upload-picture" className="btn btn-accent">
             <RiImageAddFill className="text-xl" />
-          </button>
-          <button className="btn btn-primary flex items-center gap-1">
+          </label>
+          <input
+            accept="image/*"
+            className="sr-only"
+            id="upload-picture"
+            type="file"
+            onChange={handleNewImage}
+          />
+          <button
+            type="submit"
+            className="btn btn-primary flex items-center gap-1"
+          >
             <IoSend />
             <span className="hidden md:inline">Send</span>
           </button>
@@ -98,7 +140,28 @@ const ChatBox = () => {
             <span className="hidden md:inline">Suggest</span>
           </button>
         </div>
-      </div>
+
+        {/* Image upload preview or pop-up */}
+        {formData?.selectedImage && (
+          <div className="w-[150px] h-[150px] absolute -top-[160px] left-[10px] avatar rounded-lg  z-50 ">
+            <img
+              src={formData.selectedImage}
+              alt={`Your selected Image`}
+              className="rounded"
+            />
+            <button
+              onClick={() =>
+                setFormData((prev) => ({ ...prev, selectedImage: null }))
+              }
+              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
+              flex items-center justify-center"
+              type="button"
+            >
+              <X className="size-5 cursor-pointer hover:scale-115 transition-all duration-200" />
+            </button>
+          </div>
+        )}
+      </form>
     </div>
   );
 };
