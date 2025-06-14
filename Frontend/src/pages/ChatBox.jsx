@@ -64,7 +64,7 @@ const ChatBox = () => {
     };
     fetchMessages();
     console.log(selectedUser._id)
-  }, [getMessages]);
+  }, [selectedUser]);
   console.log(messages)
   return (
     <div className="flex flex-col w-full  h-screen bg-white font-sans md:px-8   ">
