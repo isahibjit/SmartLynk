@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import profileImg from "../assets/profile-holder.webp";
 import { FaRobot } from "react-icons/fa";
@@ -9,13 +9,15 @@ import {
   setSelectedUser,
   setIsSelectedForMobile,
   selectedUser,
+  messages,
   sendMessage,
+  getMessages,
 } from "../features/chat/chatSlice";
 import { Image, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
 
 const ChatBox = () => {
-  const { selectedUser, isSelectedForMobile } = useSelector(
+  const { selectedUser, isSelectedForMobile,messages } = useSelector(
     (state) => state.chat
   );
   const { authUser } = useSelector((state) => state.auth);
@@ -51,6 +53,19 @@ const ChatBox = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        await dispatch(getMessages(selectedUser._id)).unwrap();
+        toast.success("Fetch SuccessFul");
+      } catch (error) {
+        toast.error("Fetch UnsuccessFul");
+      }
+    };
+    fetchMessages();
+    console.log(selectedUser._id)
+  }, [getMessages]);
+  console.log(messages)
   return (
     <div className="flex flex-col w-full  h-screen bg-white font-sans md:px-8   ">
       {/* Header */}

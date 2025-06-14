@@ -9,7 +9,7 @@ const ChatApp = () => {
   const [activeChat, setActiveChat] = useState(null);
   const { users, selectedUser, isSelectedForMobile } = useSelector((state) => state.chat);
   const homePageRef = useRef()
-  console.log(users);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getUsersForSidebar());
