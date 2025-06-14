@@ -1,33 +1,37 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getUsersForSidebarService } from "../../redux/service";
-export const getUsersForSidebar = createAsyncThunk("/message/get-users",getUsersForSidebarService)
+export const getUsersForSidebar = createAsyncThunk("/message/get-users", getUsersForSidebarService)
 const chatSlice = createSlice({
-    name : "chat",
-    initialState : {
-        messages  : [],
-        users : [],
-        selectedUser : null,
-        isUserLoading : false,
-        isMessageLoading : false,
+    name: "chat",
+    initialState: {
+        messages: [],
+        users: [],
+        selectedUser: null,
+        isUserLoading: false,
+        isMessageLoading: false,
+        isSelectedForMobile: false,
     },
-    reducers : {
-        setSelectedUser : (state,action)=>{
+    reducers: {
+        setSelectedUser: (state, action) => {
             state.selectedUser = action.payload;
-        }
+        },
+        setIsSelectedForMobile: (state, action) => {
+            state.isSelectedForMobile = action.payload;
+        },
     },
-    extraReducers : (builder)=>{
+    extraReducers: (builder) => {
         builder
-        .addCase(getUsersForSidebar.pending,(state)=>{
-            state.isUserLoading = true;
-        })
-        .addCase(getUsersForSidebar.fulfilled,(state,action)=>{
-            state.isUserLoading = false;
-            state.users = action.payload
-        })
-        .addCase(getUsersForSidebar.rejected,(state)=>{
-            state.isUserLoading = false
-        })
+            .addCase(getUsersForSidebar.pending, (state) => {
+                state.isUserLoading = true;
+            })
+            .addCase(getUsersForSidebar.fulfilled, (state, action) => {
+                state.isUserLoading = false;
+                state.users = action.payload
+            })
+            .addCase(getUsersForSidebar.rejected, (state) => {
+                state.isUserLoading = false
+            })
     }
 })
-export const {setSelectedUser} = chatSlice.actions
+export const { setSelectedUser, setIsSelectedForMobile } = chatSlice.actions
 export default chatSlice.reducer

@@ -1,23 +1,28 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import profileImg from "../assets/profile-holder.webp";
 import { FaRobot } from "react-icons/fa";
 import { RiImageAddFill } from "react-icons/ri";
 import { IoSend } from "react-icons/io5";
 import { FaArrowLeft } from "react-icons/fa";
+import { setSelectedUser,setIsSelectedForMobile } from "../features/chat/chatSlice";
 
 const ChatBox = () => {
-  const { selectedUser } = useSelector((state) => state.chat);
+  const { selectedUser,isSelectedForMobile } = useSelector((state) => state.chat);
   const { authUser } = useSelector((state) => state.auth);
+  const dispatch = useDispatch()
   return (
     <div className="flex flex-col w-full  h-screen bg-white font-sans md:px-8   ">
       {/* Header */}
       {/* Chat Title */}
       <div className="px-8 py-5 border border-gray-200 bg-slate-100 rounded-md flex space-x-2 justify-center items-center sticky top-0">
-       
-            <button className=" text-2xl absolute hover:bg-gray-300 rounded-lg  left-[20px] p-2 cursor-pointer transition-all md:hidden block mr-8 duration-200"><FaArrowLeft /></button>
-  
-        <div className="avatar"> 
+        <button
+        onClick={()=>dispatch(setSelectedUser(null))}
+        className="text-2xl absolute hover:bg-gray-300 rounded-lg  left-[20px] p-2 cursor-pointer transition-all md:hidden block mr-8 duration-200">
+          <FaArrowLeft />
+        </button>
+
+        <div className="avatar">
           <div className="w-14 rounded">
             <img
               src={selectedUser.profilePic || profileImg}
@@ -32,7 +37,7 @@ const ChatBox = () => {
 
       {/* Messages */}
 
-      <div className="flex-1 overflow-y mt-3 px-2">
+      <div className="flex-1 overflow-y-auto mt-3 px-2">
         <div className="chat chat-start ">
           <div className="chat-image avatar">
             <div className="w-10 rounded-full">

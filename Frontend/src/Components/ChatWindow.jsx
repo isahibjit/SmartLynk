@@ -1,7 +1,7 @@
 import React from "react";
 
 const ChatWindow = () => (
-  <div className="flex-1 flex flex-col bg-base-200">
+  <div className="flex-1 flex-col bg-base-200 md:flex hidden">
     <div className="flex items-center justify-between p-6 border-b border-base-300">
       <div>
         <h2 className="text-xl font-semibold">AI-Enhanced Chat</h2>
