@@ -44,19 +44,19 @@ export const getUsersForSidebar = async (req, res) => {
 }
 
 export const getMessages = async (req, res) => {
-   // get the messages, get the sender and receiver's id
-   const myId = req.user._id
-   const hisId = req.params.id
-   if (!myId || !hisId) {
-      return res.status(400).json({ message: "senderId and receiverId are required." });
-   }
-   const messages = await Message.find({
-      $or: [
-         {senderId : myId},
-         {receiverId : hisId},
-         {receiverId : myId}
-      ]
-   }).sort({createdAt: 1}) // sort by time ascending (older messages first)
-   res.send(messages)
+   try {
+      const { id: hisId } = req.params;
+      const myId = req.user._id;
+      const messages = await Message.find({
+         $or: [
+            { senderId: myId, receiverId: hisId },
+            { senderId: hisId, receiverId: myId }
+         ]
+      });
 
-}
+      res.status(200).json(messages);
+   } catch (error) {
+      console.log("Error in getMessages controller: ", error.message);
+      res.status(500).json({ error: "Internal server error" });
+   }
+};
