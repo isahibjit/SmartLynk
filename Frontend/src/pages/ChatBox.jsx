@@ -35,7 +35,7 @@ const ChatBox = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("formData is ",formData)
+    console.log("formData is ", formData);
   };
 
   return (
@@ -79,7 +79,16 @@ const ChatBox = () => {
             {selectedUser.fullname}
             <time className="text-xs opacity-50">12:45</time>
           </div>
-          <div className="chat-bubble">You were the Chosen One!</div>
+          {/* shouldn't come from formData but when you receive it ! */}
+          <div className="chat-bubble"> 
+            {formData.selectedImage &&  (<div className="w-[150px] h-[150px] left-[10px] avatar rounded-lg ">
+            <img
+              src={formData.selectedImage}
+              alt={`Your selected Image`}
+              className="rounded"
+            /></div>)}
+            <span className="block">You were the Chosen One!</span>
+          </div>
           <div className="chat-footer opacity-50">Delivered</div>
         </div>
 
@@ -96,6 +105,12 @@ const ChatBox = () => {
             {authUser.fullname}
             <time className="text-xs opacity-50">12:46</time>
           </div>
+          {formData.selectedImage &&  (<div className="w-[150px] h-[150px] left-[10px] avatar rounded-lg ">
+            <img
+              src={formData.selectedImage}
+              alt={`Your selected Image`}
+              className="rounded"
+            /></div>)}
           <div className="chat-bubble">I hate you!</div>
           <div className="chat-footer opacity-50">Seen at 12:46</div>
         </div>
