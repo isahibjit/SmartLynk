@@ -74,7 +74,7 @@ const scrollToBottom = () => {
   }, [selectedUser]);
 
   return (
-    <div className="flex flex-col w-full  h-screen bg-white font-sans md:px-8   ">
+    <div className="flex flex-col w-full h-[90vh] bg-white font-sans md:px-8 py-8   ">
       {/* Header */}
       {/* Chat Title */}
       <div className="px-8 py-5 border border-gray-200 bg-slate-100 rounded-md flex space-x-2 justify-center items-center sticky top-0">
@@ -102,7 +102,7 @@ const scrollToBottom = () => {
       {/* Messages */}
       <div
      
-      className="flex-1  mt-3 px-2 ">
+      className="flex-1  mt-3 px-2  overflow-y-auto">
         {messages.length > 0
           ? messages.map((message, index) => (
               <div  ref={messageEndRef} key={index}>

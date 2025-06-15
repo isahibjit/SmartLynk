@@ -3,24 +3,24 @@ import logo from "/logo.png";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../features/auth/authSlice";
-import profileImg from "../assets/profile-holder.webp"
+import profileImg from "../assets/profile-holder.webp";
 import toast from "react-hot-toast";
 const Navbar = () => {
-  const { authUser,isSigningOut } = useSelector((state) => state.auth);
-  const dispatch = useDispatch()
-  const handleLogout = async()=>{
+  const { authUser, isSigningOut } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const handleLogout = async () => {
     try {
-      await dispatch(signOut()).unwrap()
-       toast.success("Signed out Successfully!")
+      await dispatch(signOut()).unwrap();
+      toast.success("Signed out Successfully!");
     } catch (error) {
-      toast.error(error)
+      toast.error(error);
     }
-  }
+  };
   return (
-    <header className="navbar  bg-base-100 shadow-md px-4 sm:px-10">
+    <header className="navbar h-[5vh] bg-base-100 shadow-md px-4 sm:px-10 fixed z-50 ">
       <div className="flex-1 flex items-center gap-3">
         <Link to="/">
-          <img src={logo} alt="Logo" className="w-36 sm:w-40" />
+          <img src={logo} alt="Logo" className="w-32 sm:w-40" />
         </Link>
         <h1 className="text-sm sm:text-xl font-bold text-gray-500">
           AI That Talks Your Talk
@@ -53,17 +53,18 @@ const Navbar = () => {
               className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
             >
               <li>
-                <button 
-                onClick={handleLogout}
-                className="text-lg text-primary btn border border-black">
+                <button
+                  onClick={handleLogout}
+                  className="text-lg text-primary btn border border-black"
+                >
                   {!isSigningOut ? (
-                  <span>Logout</span>
-                ) : (
-                  <img
-                    src="https://raw.githubusercontent.com/n3r4zzurr0/svg-spinners/main/preview/90-ring-with-bg-white-36.svg"
-                    alt="loading animation"
-                  />
-                )}
+                    <span>Logout</span>
+                  ) : (
+                    <img
+                      src="https://raw.githubusercontent.com/n3r4zzurr0/svg-spinners/main/preview/90-ring-with-bg-white-36.svg"
+                      alt="loading animation"
+                    />
+                  )}
                 </button>
               </li>
               <li className="my-2">
@@ -79,9 +80,7 @@ const Navbar = () => {
         <div className="avatar">
           <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
             <Link to="/update-profile">
-              <img
-                src={authUser?.profilePic || profileImg}
-              />
+              <img src={authUser?.profilePic || profileImg} />
             </Link>
           </div>
         </div>

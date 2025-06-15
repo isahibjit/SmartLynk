@@ -1,18 +1,19 @@
 import React from "react";
 import ContactItem from "./ContactItem";
 import { useDispatch, useSelector } from "react-redux";
-import {setSelectedUser} from "../features/chat/chatSlice.js"
-const ChatSidebar = ({activeChat, onContactClick }) => {
-    const { users,selectedUser,isSelectedUserForMobile } = useSelector((state) => state.chat);
-    const dispatch = useDispatch()
+import { setSelectedUser } from "../features/chat/chatSlice.js";
+const ChatSidebar = ({ activeChat, onContactClick }) => {
+  const { users, selectedUser, isSelectedUserForMobile } = useSelector(
+    (state) => state.chat
+  );
+  const dispatch = useDispatch();
   return (
-   <div
-  className={`md:w-[30vw] w-full
-    ${selectedUser && 'hidden' }
-    md:flex flex-col border-r border-base-300`}
->
-
-      <div className="p-6 border-b border-base-300">
+    <div
+      className={`md:w-[30vw] w-full
+    ${selectedUser && "hidden"}
+    md:flex flex-col border-r border-base-300   overflow-y-auto`}
+    >
+      <div className="p-6 border-b border-base-300 shrink-0">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Contacts</h2>
           <div className="form-control">
@@ -43,8 +44,9 @@ const ChatSidebar = ({activeChat, onContactClick }) => {
             contact={contact}
             isActive={activeChat === contact._id}
             onClick={() => {
-              dispatch(setSelectedUser(contact))
-              onContactClick(contact._id)}}
+              dispatch(setSelectedUser(contact));
+              onContactClick(contact._id);
+            }}
           />
         ))}
       </div>
