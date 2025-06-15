@@ -11,7 +11,7 @@ const chatSlice = createSlice({
         selectedUser: null,
         isUserLoading: false,
         isMessageLoading: false,
-        isSelectedForMobile: false,
+        isMessageSending: false,
     },
     reducers: {
         setSelectedUser: (state, action) => {
@@ -35,9 +35,17 @@ const chatSlice = createSlice({
             })
 
 
+            .addCase(sendMessage.pending,(state)=>{
+                state.isMessageSending = true
+            })
             .addCase(sendMessage.fulfilled,(state,action)=>{
                 state.messages = action.payload
+                 state.isMessageSending = false
             })
+            .addCase(sendMessage.rejected,(state)=>{
+                 state.isMessageSending = false
+            })
+
 
             .addCase(getMessages.pending,(state)=>{
                 state.isMessageLoading = true
@@ -51,5 +59,5 @@ const chatSlice = createSlice({
             })
     }
 })
-export const { setSelectedUser, setIsSelectedForMobile,selectedUser,messages } = chatSlice.actions
+export const { setSelectedUser, setIsSelectedForMobile,selectedUser,messages, isMessageSending } = chatSlice.actions
 export default chatSlice.reducer

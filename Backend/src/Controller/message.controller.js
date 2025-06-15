@@ -7,7 +7,7 @@ export const sendMessage = async (req, res) => {
       const { _id: senderId } = req.user
       const { id: receiverId } = req.params
       const { text, image } = req.body
-
+      console.log("this is image",image)
       let imageUrl;
       if (image) {
          //assuming the image is in base64
