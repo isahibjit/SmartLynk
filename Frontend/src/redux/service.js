@@ -2,7 +2,6 @@
 import toast from "react-hot-toast"
 import { axiosInstance } from "../lib/axios.js"
 
-
 export const checkAuthService = async (_, thunkApi) => {
     try {
         const response = await axiosInstance.get("/auth/check")

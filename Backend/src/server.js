@@ -25,12 +25,6 @@ app.get("/",(req,res)=>{
     res.send("Hello There")
 })
 
-io.on('connection',(socket)=>{
-    console.log('new connection established',socket.id)
-    socket.on('disconnect',()=>{
-        console.log('user disconnected',socket.id)
-    })
-})
 
 
 

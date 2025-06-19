@@ -6,12 +6,15 @@ import { signOut } from "../features/auth/authSlice";
 import profileImg from "../assets/profile-holder.webp";
 import toast from "react-hot-toast";
 const Navbar = () => {
-  const { authUser, isSigningOut } = useSelector((state) => state.auth);
+  const { authUser, isSigningOut,socket } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const handleLogout = async () => {
     try {
       await dispatch(signOut()).unwrap();
       toast.success("Signed out Successfully!");
+      if (socket?.connected) {
+        socket.disconnect();
+      }
     } catch (error) {
       toast.error(error);
     }
