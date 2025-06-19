@@ -25,10 +25,10 @@ function App() {
     dispatch(checkAuth());
   }, [dispatch]);
   useEffect(() => {
-    if(authUser){
+    if (authUser) {
       dispatch(connectSocket());
     }
-  }, [authUser]);
+  }, [authUser, dispatch]);
 
   const router = createBrowserRouter([
     {
