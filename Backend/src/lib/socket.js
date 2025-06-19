@@ -15,7 +15,7 @@ const userSocketMap = {}
 
 
 export const getReceiverSocketIdByUserId = (userId) => {
-    return userSocketMap[userId]
+    return userSocketMap[userId];
 
 
 }

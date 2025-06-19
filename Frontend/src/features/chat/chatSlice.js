@@ -17,9 +17,9 @@ const chatSlice = createSlice({
         setSelectedUser: (state, action) => {
             state.selectedUser = action.payload;
         },
-        setIsSelectedForMobile: (state, action) => {
-            state.isSelectedForMobile = action.payload;
-        },
+        setMessages : (state,action)=>{
+            state.messages = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -59,5 +59,5 @@ const chatSlice = createSlice({
             })
     }
 })
-export const { setSelectedUser, setIsSelectedForMobile,selectedUser,messages, isMessageSending } = chatSlice.actions
+export const { setSelectedUser, setIsSelectedForMobile,selectedUser,messages, setMessages, isMessageSending } = chatSlice.actions
 export default chatSlice.reducer

@@ -16,6 +16,7 @@ import {
 import { Image, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
 import TimeFormat from "../lib/TimeFormat";
+import { subscribeToMessage } from "../redux/socketActions";
 
 const ChatBox = () => {
   const { selectedUser, isSelectedForMobile, messages } = useSelector(
@@ -24,7 +25,11 @@ const ChatBox = () => {
   const messageEndRef = useRef(null)
   const { authUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
+useEffect(() => {
+  if (messageEndRef.current) {
+    messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+  }
+}, [messages]);
   const [formData, setFormData] = useState({
     text: "",
     image: null,
@@ -47,7 +52,7 @@ const ChatBox = () => {
       const sendMessageData = { formData, id };
       try {
         await dispatch(sendMessage(sendMessageData)).unwrap();
-        dispatch(getMessages(selectedUser._id)); // Optional but safe
+        // dispatch(getMessages(selectedUser._id)); // Optional but safe
         setFormData((prev) => ({ ...prev, image: "", text: "" }));
       } catch (error) {
         toast.error("Message not send !");
@@ -55,20 +60,17 @@ const ChatBox = () => {
       }
     }
   };
-const scrollToBottom = () => {
-  messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-};
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        
         await dispatch(getMessages(selectedUser._id)).unwrap();
       } catch (error) {
         toast.error("Fetch UnsuccessFul");
       }
     };
     fetchMessages();
-  }, [selectedUser]);
+    dispatch(subscribeToMessage());
+  }, [selectedUser, subscribeToMessage, dispatch]);
 
   return (
     <div className="flex flex-col w-full h-[90vh] bg-white font-sans md:px-8 py-8   ">

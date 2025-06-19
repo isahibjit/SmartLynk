@@ -1,6 +1,7 @@
 
 import { io } from "socket.io-client";
 import { setSocket } from "../features/auth/authSlice";
+import { setMessages } from "../features/chat/chatSlice";
 let socketInstance = null
 
 
@@ -20,10 +21,23 @@ export const connectSocket = () => (dispatch, getState) => {
 
 }
 export const disconnectSocket = () => (dispatch, getState) => {
-    const {socket} = getState().auth
+    const { socket } = getState().auth
     if (socket?.connected) {
         socketInstance.disconnect()
         dispatch(setSocket(null))
     }
     console.log('disconnected')
+}
+
+export const subscribeToMessage = () => (dispatch, getState) => {
+    const { selectedUser} = getState().chat
+    if(!selectedUser) return
+    const {socket} = getState().auth
+    if (!socket || !selectedUser) return
+    socket.on('newMessage', (message) => {
+    if(message.senderId === selectedUser._id){
+        const newMessages = [...getState().chat.messages, message]
+        dispatch(setMessages(newMessages))
+    }
+    });
 }
