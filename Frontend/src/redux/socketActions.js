@@ -1,7 +1,7 @@
 
 import { io } from "socket.io-client";
 import { setOnlineUsers, setSocket } from "../features/auth/authSlice";
-import { setMessages } from "../features/chat/chatSlice";
+import { setMessages, setTyping } from "../features/chat/chatSlice";
 let socketInstance = null
 
 
@@ -32,14 +32,24 @@ export const disconnectSocket = () => (dispatch, getState) => {
 }
 
 export const subscribeToMessage = () => (dispatch, getState) => {
-    const { selectedUser} = getState().chat
-    if(!selectedUser) return
-    const {socket} = getState().auth
-    if (!socket || !selectedUser) return
-    socket.on('newMessage', (message) => {
-    if(message.senderId === selectedUser._id){
-        const newMessages = [...getState().chat.messages, message]
-        dispatch(setMessages(newMessages))
+  const { selectedUser } = getState().chat;
+  const { socket, authUser } = getState().auth;
+
+  if (!selectedUser || !socket) return;
+
+  // Prevent multiple bindings
+  socket.off('newMessage');
+
+  socket.on('newMessage', (message) => {
+    // Don't add your own sent message again
+    if (message.senderId === authUser._id) return;
+
+    // Only add if the sender is the one you're chatting with
+    if (message.senderId === selectedUser._id) {
+      const newMessages = [...getState().chat.messages, message];
+      dispatch(setMessages(newMessages));
     }
-    });
-}
+  });
+};
+
+

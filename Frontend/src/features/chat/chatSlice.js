@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getMessagesService, getUsersForSidebarService, sendMessageService } from "../../redux/service";
+import { getConversationsService, getMessagesService, getUsersForSidebarService, sendMessageService } from "../../redux/service";
 export const getUsersForSidebar = createAsyncThunk("/message/get-users", getUsersForSidebarService)
 export const sendMessage = createAsyncThunk('/message/send',sendMessageService)
 export const getMessages = createAsyncThunk('/message/get',getMessagesService)
+export const getConversations = createAsyncThunk('/message/get-conversations', getConversationsService)
 const chatSlice = createSlice({
     name: "chat",
     initialState: {
@@ -12,6 +13,8 @@ const chatSlice = createSlice({
         isUserLoading: false,
         isMessageLoading: false,
         isMessageSending: false,
+        conversations : [],
+        typing : false,
     },
     reducers: {
         setSelectedUser: (state, action) => {
@@ -20,6 +23,9 @@ const chatSlice = createSlice({
         setMessages : (state,action)=>{
             state.messages = action.payload
         },
+        setTyping : (state,action)=>{
+            state.typing = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -57,7 +63,19 @@ const chatSlice = createSlice({
             .addCase(getMessages.rejected,(state)=>{
                 state.isMessageLoading = false
             })
+
+            // conversations
+            .addCase(getConversations.pending, (state) => {
+                state.isUserLoading = true;
+            })
+            .addCase(getConversations.fulfilled, (state, action) => {
+                state.isUserLoading = false;
+                state.conversations = action.payload
+            })
+            .addCase(getConversations.rejected, (state) => {
+                state.isUserLoading = false
+            })
     }
 })
-export const { setSelectedUser, setIsSelectedForMobile,selectedUser,messages, setMessages, isMessageSending } = chatSlice.actions
+export const { setSelectedUser, setIsSelectedForMobile,selectedUser,messages,setTyping, setMessages, isMessageSending } = chatSlice.actions
 export default chatSlice.reducer

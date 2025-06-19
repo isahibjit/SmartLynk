@@ -12,24 +12,26 @@ import {
   sendMessage,
   isMessageSending,
   getMessages,
+  setTyping,
 } from "../features/chat/chatSlice";
 import { Image, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
 import TimeFormat from "../lib/TimeFormat";
 import { subscribeToMessage } from "../redux/socketActions";
-
+import Typing from "../Components/Typing";
 const ChatBox = () => {
-  const { selectedUser, isSelectedForMobile, messages } = useSelector(
+  const { selectedUser, isSelectedForMobile, messages, typing } = useSelector(
     (state) => state.chat
   );
-  const messageEndRef = useRef(null)
-  const { authUser } = useSelector((state) => state.auth);
+
+  const messageEndRef = useRef(null);
+  const { authUser, socket } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-useEffect(() => {
-  if (messageEndRef.current) {
-    messageEndRef.current.scrollIntoView({ behavior: "smooth" });
-  }
-}, [messages]);
+  useEffect(() => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
   const [formData, setFormData] = useState({
     text: "",
     image: null,
@@ -52,7 +54,7 @@ useEffect(() => {
       const sendMessageData = { formData, id };
       try {
         await dispatch(sendMessage(sendMessageData)).unwrap();
-    
+
         setFormData((prev) => ({ ...prev, image: "", text: "" }));
       } catch (error) {
         toast.error("Message not send !");
@@ -71,6 +73,38 @@ useEffect(() => {
     fetchMessages();
     dispatch(subscribeToMessage());
   }, [selectedUser, subscribeToMessage, dispatch]);
+
+  useEffect(() => {
+    socket.on("typing", ({ from }) => {
+      if (from === selectedUser._id) {
+        dispatch(setTyping(true));
+      }
+    });
+
+    socket.on("stopTyping", ({ from }) => {
+      if (from === selectedUser._id) {
+        dispatch(setTyping(false));
+      }
+    });
+    return () => {
+      socket.off("typing");
+      socket.off("stopTyping");
+    };
+  }, [selectedUser]);
+
+  const handleInputChange = async (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (!typing) {
+      socket.emit("typing", { to: selectedUser._id });
+    }
+    typingTimeout = setTimeout(() => {
+      setTyping(false);
+      socket.emit("stopTyping", { to: selectedUser._id });
+    }, 1000);
+    clearTimeout(typingTimeout);
+    
+  };
 
   return (
     <div className="flex flex-col w-full h-[90vh] bg-white font-sans md:px-8 py-8   ">
@@ -99,12 +133,10 @@ useEffect(() => {
 
       {/* YOu'll need to run a loop here  */}
       {/* Messages */}
-      <div
-     
-      className="flex-1  mt-3 px-2  overflow-y-auto">
+      <div className="flex-1  mt-3 px-2  overflow-y-auto">
         {messages.length > 0
           ? messages.map((message, index) => (
-              <div  ref={messageEndRef} key={index}>
+              <div ref={messageEndRef} key={index}>
                 {message.senderId === selectedUser._id ? (
                   <div className="chat chat-start">
                     <div className="chat-image avatar">
@@ -134,6 +166,7 @@ useEffect(() => {
                       <span className="block">{message.text}</span>
                     </div>
                     <div className="chat-footer opacity-50">Delivered</div>
+                  
                   </div>
                 ) : (
                   <div className="chat chat-end">
@@ -172,7 +205,9 @@ useEffect(() => {
                 )}
               </div>
             ))
-          : null}
+            : null}
+            
+            <div>{typing && <Typing />}</div>
       </div>
 
       {/* Input Box */}
@@ -186,10 +221,7 @@ useEffect(() => {
           placeholder="Send Message"
           value={formData.text}
           name="text"
-          onChange={(e) => {
-            const { name, value } = e.target;
-            setFormData((prev) => ({ ...prev, [name]: value }));
-          }}
+          onChange={handleInputChange}
           className="flex-grow border border-gray-300 rounded-md py-2 px-3 text-md outline-none w-full"
         />
         <div className="flex gap-2  ">
@@ -203,23 +235,19 @@ useEffect(() => {
             type="file"
             onChange={handleNewImage}
           />
-          <button
-            type="submit"
-            className="btn btn-primary sm:w-[100px]"
-          >
-
-               {!isMessageSending ? (
-                 <div className="flex items-center gap-1 ">
-                  <IoSend />
-                  <span className="hidden md:inline">Send</span>
-                </div>
-              ) : (
-                <img
+          <button type="submit" className="btn btn-primary sm:w-[100px]">
+            {!isMessageSending ? (
+              <div className="flex items-center gap-1 ">
+                <IoSend />
+                <span className="hidden md:inline">Send</span>
+              </div>
+            ) : (
+              <img
                 className="w-[30px]"
-                  src="https://raw.githubusercontent.com/n3r4zzurr0/svg-spinners/main/preview/90-ring-with-bg-white-36.svg"
-                  alt="loading animation"
-                />
-              )}
+                src="https://raw.githubusercontent.com/n3r4zzurr0/svg-spinners/main/preview/90-ring-with-bg-white-36.svg"
+                alt="loading animation"
+              />
+            )}
           </button>
           <button className="btn btn-secondary flex items-center gap-1 sm:w-[100px]">
             <FaRobot />

@@ -5,58 +5,69 @@ import Conversation from "../models/conversation.model.js";
 import User from "../models/user.model.js";
 
 export const sendMessage = async (req, res) => {
-   try {
-      const { _id: senderId } = req.user
-      const { id: receiverId } = req.params
-      const { text, image } = req.body
-      let imageUrl;
+  try {
+    const { _id: senderId } = req.user;
+    const { id: receiverId } = req.params;
+    const { text, image } = req.body;
 
-      let conversation = await Conversation.findOne({
-         members: { $all: [senderId, receiverId] }
+    let imageUrl;
+
+    // 1. Upload image if provided
+    if (image) {
+      const imageResponse = await cloudinary.uploader.upload(image);
+      imageUrl = imageResponse.secure_url;
+    }
+
+    // 2. Find or create conversation
+    let conversation = await Conversation.findOne({
+      members: { $all: [senderId, receiverId] },
+    });
+
+    if (!conversation) {
+      conversation = await Conversation.create({
+        members: [senderId, receiverId],
+        lastMessage: {
+          text,
+          image: imageUrl,
+          senderId,
+          createdAt: new Date(),
+        },
       });
-      if (!conversation) {
-         conversation = new Conversation.create({
-            members: [senderId, receiverId],
-            lastMessage: {
-               text: text,
-               image: image,
-               senderId: senderId,
-               createdAt: new Date()
-            }
-         })
-      }
-      if (image) {
-         //assuming the image is in base64
-         const imageResponse = await cloudinary.uploader.upload(image)
-         imageUrl = imageResponse.secure_url;
-      }
-      const newMessage = new Message({
-         senderId: senderId,
-         receiverId: receiverId,
-         text: text,
-         image: imageUrl
-      })
-      await newMessage.save()
-      // after saving it trigger the socket/io 
-      conversation.lastMessage = {
-         text,
-         image,
-         senderId,
-         createdAt: newMessage.createdAt,
-      };
-      await conversation.save();
-      const receiverSocketId = getReceiverSocketIdByUserId(receiverId)
-      // sending the message to the receiver
-      if (receiverSocketId) {
-         io.to(receiverSocketId).emit("newMessage", newMessage)
-      }
-      // or maybe send a notification to the receiver
-      res.status(200).json(newMessage)
-   } catch (error) {
-      console.log("Error in messageController", error)
-      res.status(500).json({ message: "Internal Server Error" })
-   }
-}
+    }
+
+    // 3. Create and save message
+    const newMessage = new Message({
+      senderId,
+      receiverId,
+      text,
+      image: imageUrl,
+    });
+
+    await newMessage.save();
+
+    // 4. Update lastMessage in conversation
+    conversation.lastMessage = {
+      text,
+      image: imageUrl,
+      senderId,
+      createdAt: newMessage.createdAt,
+    };
+
+    await conversation.save();
+
+    // 5. Emit socket event if receiver is online
+    const receiverSocketId = getReceiverSocketIdByUserId(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
+
+    res.status(200).json(newMessage);
+  } catch (error) {
+    console.error("Error in sendMessage:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 
 export const getUsersForSidebar = async (req, res) => {
    // get their name, current message, profile image, last online

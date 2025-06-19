@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ContactItem from "./ContactItem";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedUser } from "../features/chat/chatSlice.js";
+import {
+  getConversations,
+  setSelectedUser,
+} from "../features/chat/chatSlice.js";
+import toast from "react-hot-toast";
 const ChatSidebar = ({ activeChat, onContactClick }) => {
-  const { users, selectedUser, messages } = useSelector(
+  const { users, selectedUser, conversations, messages } = useSelector(
     (state) => state.chat
   );
-  const {onlineUsers} = useSelector((state) => state.auth);
+
+  const { onlineUsers } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  useEffect(() => {
+    const fetchConversation = async () => {
+      try {
+        await dispatch(getConversations()).unwrap();
+      } catch (error) {
+        toast.error("Couldn't fetch conversations");
+      }
+    };
+    fetchConversation();
+  }, [dispatch, messages]);
+  console.log("conversations", conversations);
+
   return (
     <div
       className={`md:w-[30vw] w-full
@@ -40,26 +57,31 @@ const ChatSidebar = ({ activeChat, onContactClick }) => {
       </div>
       <div className="overflow-y-auto flex-1 ">
         {[...users]
-        .sort((a, b) => {
-      if (!selectedUser) return 0;
-      if (a._id === selectedUser._id) return -1;
-      if (b._id === selectedUser._id) return 1;
-      return 0;
-    })
-        .map((contact) => (
-          <ContactItem
-            key={contact._id}
-            contact={contact}
-            isActive={activeChat === contact._id}
-            isOnline = {onlineUsers.includes(contact._id)}
-            lastMessage = "Hello"
-            createdAt = {contact.createdAt}
-            onClick={() => {
-              dispatch(setSelectedUser(contact));
-              onContactClick(contact._id);
-            }}
-          />
-        ))}
+          .sort((a, b) => {
+            if (!selectedUser) return 0;
+            if (a._id === selectedUser._id) return -1;
+            if (b._id === selectedUser._id) return 1;
+            return 0;
+          })
+          .map((contact) => (
+            <ContactItem
+              key={contact._id}
+              contact={contact}
+              isActive={activeChat === contact._id}
+              isOnline={onlineUsers.includes(contact._id)}
+              lastMessage={
+
+                conversations.find(
+                  (conv) => conv.user._id === contact._id
+                )?.lastMessage?.text || "No messages yet"
+              }
+              createdAt={contact.createdAt}
+              onClick={() => {
+                dispatch(setSelectedUser(contact));
+                onContactClick(contact._id);
+              }}
+            />
+          ))}
       </div>
     </div>
   );

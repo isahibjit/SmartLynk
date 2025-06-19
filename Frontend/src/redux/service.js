@@ -77,3 +77,14 @@ export const getMessagesService = async(id,thunkApi)=>{
 }
 
 
+// conversations
+
+export const getConversationsService = async (_, thunkApi) => {
+    try {
+        const response = await axiosInstance.get("/conversation/get")
+        return response.data
+    } catch (error) {
+        console.log(error)
+        return thunkApi.rejectWithValue(error.response.message || "Couldn't get conversations")
+    }
+}

@@ -8,3 +8,18 @@ html, body, #root {
   margin: 0;
   overflow:auto
 }
+
+.animation1 {
+  animation: bounce 0.4s ease-in-out infinite alternate;
+  animation-delay: -0.4s;
+}
+
+.animation2 {
+  animation: bounce 0.4s ease-in-out infinite alternate;
+  animation-delay: -0.2s;
+}
+
+.animation3 {
+  animation: bounce 0.4s ease-in-out infinite alternate;
+  animation-delay: 0s;
+}

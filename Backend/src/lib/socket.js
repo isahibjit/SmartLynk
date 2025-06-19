@@ -28,10 +28,23 @@ io.on('connection', (socket) => {
     }
     // send events to all connected clients
     socket.emit('getOnlineUsers',Object.keys(userSocketMap))
+    socket.on('typing',({to})=>{
+        const receiverSocketId = getReceiverSocketIdByUserId(to)
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit('typing', { from: userId })
+        }
+    })
+    socket.on('stopTyping',({to})=>{
+        const receiverSocketId = getReceiverSocketIdByUserId(to)
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit('stopTyping', { from: userId })
+        }
+    })
 
     socket.on('disconnect', () => {
         console.log('user disconnected', socket.id)
     })
+
     
 })
 
