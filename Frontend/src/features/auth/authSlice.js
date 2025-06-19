@@ -23,7 +23,7 @@ export const authSlice = createSlice({
     reducers: {
         setSocket: (state, action) => {
             state.socket = action.payload
-        }
+        },
     },
     extraReducers: (builder) => {
         builder

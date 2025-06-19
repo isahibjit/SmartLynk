@@ -15,14 +15,20 @@ import UpdateProfilePicture from "./pages/UpdateProfilePicture";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./features/auth/authSlice";
 import HomePage from "./pages/HomePage";
+import { connectSocket } from "./redux/socketActions";
 
 function App() {
   const dispatch = useDispatch();
-  const { authUser, isSigningUp, isLogginIn, isCheckingAuth, onlineUsers } =
+  const { authUser, isSigningUp, isLoggingIn, isCheckingAuth, onlineUsers } =
     useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(checkAuth());
-  }, [checkAuth]);
+  }, [dispatch]);
+  useEffect(() => {
+    if(authUser){
+      dispatch(connectSocket());
+    }
+  }, [authUser]);
 
   const router = createBrowserRouter([
     {
