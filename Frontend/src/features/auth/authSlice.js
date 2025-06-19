@@ -5,19 +5,25 @@ import toast from "react-hot-toast";
 export const checkAuth = createAsyncThunk('auth/checkAuth', checkAuthService)
 export const signUp = createAsyncThunk('auth/signup', signUpService)
 export const signIn = createAsyncThunk('/auth/signin', signInService)
-export const signOut = createAsyncThunk('/auth/logout',signOutService)
-export const updateProfile = createAsyncThunk('/auth/update-profile',updateProfileService)
+export const signOut = createAsyncThunk('/auth/logout', signOutService)
+export const updateProfile = createAsyncThunk('/auth/update-profile', updateProfileService)
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         authUser: null,
         isSigningUp: false,
-        isSigningOut : false,
+        isSigningOut: false,
         isLoggingIn: false,
         isUpdatingProfile: false,
         isCheckingAuth: true,
-        onlineUsers: []
+        onlineUsers: [],
+        socket: null
+    },
+    reducers: {
+        setSocket: (state, action) => {
+            state.socket = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -52,32 +58,34 @@ export const authSlice = createSlice({
                 state.authUser = action.payload
                 state.isLoggingIn = false;
             })
-            .addCase(signIn.rejected, (state,action) => {
+            .addCase(signIn.rejected, (state, action) => {
                 state.isLoggingIn = false;
             })
 
-            .addCase(signOut.pending,(state)=>{
+            .addCase(signOut.pending, (state) => {
                 state.isSigningOut = true
+                state.socket = null;
             })
-            .addCase(signOut.fulfilled,(state)=>{
+            .addCase(signOut.fulfilled, (state) => {
                 state.isSigningOut = false
                 state.authUser = null
             })
-            .addCase(signOut.rejected,(state)=>{
+            .addCase(signOut.rejected, (state) => {
                 state.isSigningOut = false
             })
 
-            .addCase(updateProfile.pending,(state)=>{
+            .addCase(updateProfile.pending, (state) => {
                 state.isUpdatingProfile = true;
             })
-            .addCase(updateProfile.fulfilled,(state)=>{
+            .addCase(updateProfile.fulfilled, (state) => {
                 state.isUpdatingProfile = false;
             })
-            .addCase(updateProfile.rejected,(state)=>{
+            .addCase(updateProfile.rejected, (state) => {
                 state.isUpdatingProfile = false;
             })
     }
 
 })
+export const { setSocket } = authSlice.actions
 
 export default authSlice.reducer
