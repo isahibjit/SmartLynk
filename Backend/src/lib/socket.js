@@ -26,9 +26,13 @@ io.on('connection', (socket) => {
     if (userId) {
         userSocketMap[userId] = socket.id
     }
+    // send events to all connected clients
+    socket.emit('getOnlineUsers',Object.keys(userSocketMap))
+
     socket.on('disconnect', () => {
         console.log('user disconnected', socket.id)
     })
+    
 })
 
 export { io, app, server }

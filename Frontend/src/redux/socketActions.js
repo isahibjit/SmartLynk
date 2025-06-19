@@ -1,6 +1,6 @@
 
 import { io } from "socket.io-client";
-import { setSocket } from "../features/auth/authSlice";
+import { setOnlineUsers, setSocket } from "../features/auth/authSlice";
 import { setMessages } from "../features/chat/chatSlice";
 let socketInstance = null
 
@@ -16,9 +16,11 @@ export const connectSocket = () => (dispatch, getState) => {
     })
     socketInstance.on('connect', () => {
         dispatch(setSocket(socketInstance))
-        console.log('this is how the socket looks', socketInstance)
     })
+    socketInstance.on('getOnlineUsers', (userIds) => {
+        dispatch(setOnlineUsers(userIds))
 
+    })
 }
 export const disconnectSocket = () => (dispatch, getState) => {
     const { socket } = getState().auth

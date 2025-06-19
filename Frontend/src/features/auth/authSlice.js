@@ -24,6 +24,9 @@ export const authSlice = createSlice({
         setSocket: (state, action) => {
             state.socket = action.payload
         },
+         setOnlineUsers : (state,action)=>{
+            state.onlineUsers = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -86,6 +89,6 @@ export const authSlice = createSlice({
     }
 
 })
-export const { setSocket } = authSlice.actions
+export const { setSocket , setOnlineUsers} = authSlice.actions
 
 export default authSlice.reducer
