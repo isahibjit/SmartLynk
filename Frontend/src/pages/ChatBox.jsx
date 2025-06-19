@@ -52,7 +52,7 @@ useEffect(() => {
       const sendMessageData = { formData, id };
       try {
         await dispatch(sendMessage(sendMessageData)).unwrap();
-        // dispatch(getMessages(selectedUser._id)); // Optional but safe
+    
         setFormData((prev) => ({ ...prev, image: "", text: "" }));
       } catch (error) {
         toast.error("Message not send !");
