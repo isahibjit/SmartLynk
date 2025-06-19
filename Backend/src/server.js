@@ -6,9 +6,11 @@ import { connectDb } from "./lib/db.js"
 import cookieParser from "cookie-parser"
 import cors from "cors"
 import morgan from "morgan"
+import {app, io, server} from "./lib/socket.js"
+
+
 dotenv.config()
 const PORT = process.env.PORT
-const app = Express()
 app.use(Express.json({ limit: '10mb' }));  
 app.use(cors({
     origin : process.env.FRONTEND_URL,
@@ -23,7 +25,12 @@ app.get("/",(req,res)=>{
     res.send("Hello There")
 })
 
+io.on('connection',(socket)=>{
+    console.log('new connection established',socket.id)
+})
 
-connectDb().then(app.listen((PORT), () => {
+
+
+connectDb().then(server.listen((PORT), () => {
     console.log(`Server Connected to Port ${PORT}`)
 }))

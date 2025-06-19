@@ -9,7 +9,6 @@ import {
   setSelectedUser,
   setIsSelectedForMobile,
   selectedUser,
-  messages,
   sendMessage,
   isMessageSending,
   getMessages,
@@ -64,8 +63,6 @@ const scrollToBottom = () => {
       try {
         
         await dispatch(getMessages(selectedUser._id)).unwrap();
-        scrollToBottom()
-        toast.success("Fetch SuccessFul");
       } catch (error) {
         toast.error("Fetch UnsuccessFul");
       }
@@ -206,7 +203,7 @@ const scrollToBottom = () => {
           />
           <button
             type="submit"
-            className="btn btn-primary w-[100px]"
+            className="btn btn-primary sm:w-[100px]"
           >
 
                {!isMessageSending ? (
@@ -222,7 +219,7 @@ const scrollToBottom = () => {
                 />
               )}
           </button>
-          <button className="btn btn-secondary flex items-center gap-1 w-[100px]">
+          <button className="btn btn-secondary flex items-center gap-1 sm:w-[100px]">
             <FaRobot />
             <span className="hidden md:inline">Suggest</span>
           </button>
