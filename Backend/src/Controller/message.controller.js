@@ -1,6 +1,7 @@
 import cloudinary from "../lib/cloudinary.js";
 import { getReceiverSocketIdByUserId, io } from "../lib/socket.js";
 import Message from "../models/message.model.js";
+import Conversation from "../models/conversation.model.js";
 import User from "../models/user.model.js";
 
 export const sendMessage = async (req, res) => {
@@ -8,8 +9,22 @@ export const sendMessage = async (req, res) => {
       const { _id: senderId } = req.user
       const { id: receiverId } = req.params
       const { text, image } = req.body
-      console.log("this is image",image)
       let imageUrl;
+
+      let conversation = await Conversation.findOne({
+         members: { $all: [senderId, receiverId] }
+      });
+      if (!conversation) {
+         conversation = new Conversation.create({
+            members: [senderId, receiverId],
+            lastMessage: {
+               text: text,
+               image: image,
+               senderId: senderId,
+               createdAt: new Date()
+            }
+         })
+      }
       if (image) {
          //assuming the image is in base64
          const imageResponse = await cloudinary.uploader.upload(image)
@@ -23,12 +38,19 @@ export const sendMessage = async (req, res) => {
       })
       await newMessage.save()
       // after saving it trigger the socket/io 
-
+      conversation.lastMessage = {
+         text,
+         image,
+         senderId,
+         createdAt: newMessage.createdAt,
+      };
+      await conversation.save();
       const receiverSocketId = getReceiverSocketIdByUserId(receiverId)
       // sending the message to the receiver
-      if(receiverSocketId){
-         io.to(receiverSocketId).emit("newMessage",newMessage)
+      if (receiverSocketId) {
+         io.to(receiverSocketId).emit("newMessage", newMessage)
       }
+      // or maybe send a notification to the receiver
       res.status(200).json(newMessage)
    } catch (error) {
       console.log("Error in messageController", error)
@@ -59,7 +81,7 @@ export const getMessages = async (req, res) => {
             { senderId: hisId, receiverId: myId }
          ]
       });
-      
+
       res.status(200).json(messages);
    } catch (error) {
       console.log("Error in getMessages controller: ", error.message);
