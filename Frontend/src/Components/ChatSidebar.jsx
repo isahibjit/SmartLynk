@@ -10,7 +10,7 @@ const ChatSidebar = ({ activeChat, onContactClick }) => {
   const { users, selectedUser, conversations, messages } = useSelector(
     (state) => state.chat
   );
-console.log(users)
+
   const { onlineUsers } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -23,7 +23,6 @@ console.log(users)
     };
     fetchConversation();
   }, [dispatch, messages]);
-  console.log("conversations", conversations);
 
   return (
     <div
