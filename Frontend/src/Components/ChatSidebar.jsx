@@ -10,7 +10,7 @@ const ChatSidebar = ({ activeChat, onContactClick }) => {
   const { users, selectedUser, conversations, messages } = useSelector(
     (state) => state.chat
   );
-
+console.log(users)
   const { onlineUsers } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -55,34 +55,37 @@ const ChatSidebar = ({ activeChat, onContactClick }) => {
           />
         </div>
       </div>
-      <div className="overflow-y-auto flex-1 ">
-        {[...users]
-          .sort((a, b) => {
-            if (!selectedUser) return 0;
-            if (a._id === selectedUser._id) return -1;
-            if (b._id === selectedUser._id) return 1;
-            return 0;
-          })
-          .map((contact) => (
-            <ContactItem
-              key={contact._id}
-              contact={contact}
-              isActive={activeChat === contact._id}
-              isOnline={onlineUsers.includes(contact._id)}
-              lastMessage={
+  <div className="overflow-y-auto flex-1">
+  {[...users]
+    .sort((a, b) => {
+      const aConv = conversations.find(conv => conv.user._id === a._id);
+      const bConv = conversations.find(conv => conv.user._id === b._id);
+      const aDate = aConv ? new Date(aConv.lastMessage.createdAt) : new Date(0);
+      const bDate = bConv ? new Date(bConv.lastMessage.createdAt) : new Date(0);
 
-                conversations.find(
-                  (conv) => conv.user._id === contact._id
-                )?.lastMessage?.text || "No messages yet"
-              }
-              createdAt={contact.createdAt}
-              onClick={() => {
-                dispatch(setSelectedUser(contact));
-                onContactClick(contact._id);
-              }}
-            />
-          ))}
-      </div>
+      return bDate - aDate; // Newest conversation first
+    })
+    .map((contact) => {
+      const conversation = conversations.find(conv => conv.user._id === contact._id);
+
+      return (
+        <ContactItem
+          key={contact._id}
+          contact={contact}
+          isActive={activeChat === contact._id}
+          isOnline={onlineUsers.includes(contact._id)}
+          lastMessage={conversation?.lastMessage?.text || "No messages yet"}
+          createdAt={conversation?.createdAt || null}
+          onClick={() => {
+            dispatch(setSelectedUser(contact));
+            onContactClick(contact._id);
+          }}
+        />
+      );
+    })}
+</div>
+
+
     </div>
   );
 };

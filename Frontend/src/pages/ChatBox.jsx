@@ -99,9 +99,8 @@ const ChatBox = () => {
       socket.emit("typing", { to: selectedUser._id });
     }
     typingTimeout = setTimeout(() => {
-      setTyping(false);
       socket.emit("stopTyping", { to: selectedUser._id });
-    }, 1000);
+    }, 2500);
     clearTimeout(typingTimeout);
     
   };
