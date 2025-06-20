@@ -27,6 +27,7 @@ const ChatBox = () => {
   const messageEndRef = useRef(null);
   const { authUser, socket } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const typingTimeoutRef = useRef(null)
   useEffect(() => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -98,11 +99,10 @@ const ChatBox = () => {
     if (!typing) {
       socket.emit("typing", { to: selectedUser._id });
     }
-    typingTimeout = setTimeout(() => {
+    typingTimeoutRef.current = setTimeout(() => {
       socket.emit("stopTyping", { to: selectedUser._id });
-    }, 2500);
-    clearTimeout(typingTimeout);
-    
+      setTyping(false); 
+    }, 2000);
   };
 
   return (
@@ -165,7 +165,6 @@ const ChatBox = () => {
                       <span className="block">{message.text}</span>
                     </div>
                     <div className="chat-footer opacity-50">Delivered</div>
-                  
                   </div>
                 ) : (
                   <div className="chat chat-end">
@@ -204,9 +203,9 @@ const ChatBox = () => {
                 )}
               </div>
             ))
-            : null}
-            
-            <div>{typing && <Typing />}</div>
+          : null}
+
+        <div>{typing && <Typing />}</div>
       </div>
 
       {/* Input Box */}
