@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import profileImg from "../assets/profile-holder.webp";
-import { FaRobot } from "react-icons/fa";
-import { RiImageAddFill } from "react-icons/ri";
-import { IoSend } from "react-icons/io5";
+
 import { FaArrowLeft } from "react-icons/fa";
+import ChatForm from "../Components/Form.jsx"
 import {
   setSelectedUser,
-  setIsSelectedForMobile,
   selectedUser,
   sendMessage,
   isMessageSending,
@@ -27,7 +25,7 @@ const ChatBox = () => {
   const messageEndRef = useRef(null);
   const { authUser, socket } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const typingTimeoutRef = useRef(null)
+
   useEffect(() => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -37,32 +35,7 @@ const ChatBox = () => {
     text: "",
     image: null,
   });
-  const handleNewImage = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = async () => {
-      const base64 = reader.result;
-      setFormData((prev) => ({ ...prev, image: base64 }));
-    };
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (formData.text !== "" || formData.image) {
-      const { _id: id } = selectedUser;
-      const sendMessageData = { formData, id };
-      try {
-        await dispatch(sendMessage(sendMessageData)).unwrap();
-
-        setFormData((prev) => ({ ...prev, image: "", text: "" }));
-      } catch (error) {
-        toast.error("Message not send !");
-        console.log(error);
-      }
-    }
-  };
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -101,7 +74,7 @@ const ChatBox = () => {
     }
     typingTimeoutRef.current = setTimeout(() => {
       socket.emit("stopTyping", { to: selectedUser._id });
-      setTyping(false); 
+      setTyping(false);
     }, 2000);
   };
 
@@ -210,68 +183,7 @@ const ChatBox = () => {
 
       {/* Input Box */}
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex  gap-3 my-2 sticky bg-white bottom-2 px-2 pt-3 relative"
-      >
-        <input
-          type="text"
-          placeholder="Send Message"
-          value={formData.text}
-          name="text"
-          onChange={handleInputChange}
-          className="flex-grow border border-gray-300 rounded-md py-2 px-3 text-md outline-none w-full"
-        />
-        <div className="flex gap-2  ">
-          <label htmlFor="upload-picture" className="btn btn-accent">
-            <RiImageAddFill className="text-xl" />
-          </label>
-          <input
-            accept="image/*"
-            className="sr-only"
-            id="upload-picture"
-            type="file"
-            onChange={handleNewImage}
-          />
-          <button type="submit" className="btn btn-primary sm:w-[100px]">
-            {!isMessageSending ? (
-              <div className="flex items-center gap-1 ">
-                <IoSend />
-                <span className="hidden md:inline">Send</span>
-              </div>
-            ) : (
-              <img
-                className="w-[30px]"
-                src="https://raw.githubusercontent.com/n3r4zzurr0/svg-spinners/main/preview/90-ring-with-bg-white-36.svg"
-                alt="loading animation"
-              />
-            )}
-          </button>
-          <button className="btn btn-secondary flex items-center gap-1 sm:w-[100px]">
-            <FaRobot />
-            <span className="hidden md:inline">Suggest</span>
-          </button>
-        </div>
-
-        {/* Image upload preview or pop-up */}
-        {formData?.image && (
-          <div className="w-[150px] h-[150px] absolute -top-[160px] left-[10px] avatar rounded-lg  z-50 ">
-            <img
-              src={formData.image}
-              alt={`Your selected Image`}
-              className="rounded"
-            />
-            <button
-              onClick={() => setFormData((prev) => ({ ...prev, image: null }))}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
-              flex items-center justify-center"
-              type="button"
-            >
-              <X className="size-5 cursor-pointer hover:scale-115 transition-all duration-200" />
-            </button>
-          </div>
-        )}
-      </form>
+      <ChatForm />
     </div>
   );
 };
