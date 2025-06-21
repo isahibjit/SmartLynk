@@ -7,7 +7,7 @@ import { signIn } from "../features/auth/authSlice";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const {isSigningIn} = useSelector((state)=>state.auth)
+  const {isLoggingIn} = useSelector((state)=>state.auth)
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
@@ -94,8 +94,8 @@ const Login = () => {
                 />
                  <span className="error-msg">{errors.password}</span>
               </div>
-              <button className="btn btn-primary mt-4 w-full" type="submit">
-                 {!isSigningIn ? (
+              <button className="btn btn-primary mt-4 w-full" type="submit" disabled={isLoggingIn}>
+                 {!isLoggingIn ? (
                   <span>Sign In</span>
                 ) : (
                   <img

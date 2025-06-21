@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ContactItem from "./ContactItem";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,6 +12,8 @@ const ChatSidebar = ({ activeChat, onContactClick }) => {
   );
 
   const { onlineUsers } = useSelector((state) => state.auth);
+
+  const [isOnlineClicked, setIsOnlineClicked] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchConversation = async () => {
@@ -39,6 +41,7 @@ const ChatSidebar = ({ activeChat, onContactClick }) => {
               <input
                 type="checkbox"
                 className="checkbox checkbox-primary checkbox-sm"
+                onChange={()=>setIsOnlineClicked(!isOnlineClicked)}
               />
             </label>
           </div>
@@ -54,37 +57,49 @@ const ChatSidebar = ({ activeChat, onContactClick }) => {
           />
         </div>
       </div>
-  <div className="overflow-y-auto flex-1">
-  {[...users]
-    .sort((a, b) => {
-      const aConv = conversations.find(conv => conv.user._id === a._id);
-      const bConv = conversations.find(conv => conv.user._id === b._id);
-      const aDate = aConv ? new Date(aConv.lastMessage.createdAt) : new Date(0);
-      const bDate = bConv ? new Date(bConv.lastMessage.createdAt) : new Date(0);
+      <div className="overflow-y-auto flex-1">
+        {(isOnlineClicked
+          ? [...users].filter(user => onlineUsers.includes(user._id))
+          : [...users])
+              .sort((a, b) => {
+                const aConv = conversations.find(
+                  (conv) => conv.user._id === a._id
+                );
+                const bConv = conversations.find(
+                  (conv) => conv.user._id === b._id
+                );
+                const aDate = aConv
+                  ? new Date(aConv.lastMessage.createdAt)
+                  : new Date(0);
+                const bDate = bConv
+                  ? new Date(bConv.lastMessage.createdAt)
+                  : new Date(0);
 
-      return bDate - aDate; // Newest conversation first
-    })
-    .map((contact) => {
-      const conversation = conversations.find(conv => conv.user._id === contact._id);
+                return bDate - aDate; // Newest conversation first
+              })
+              .map((contact) => {
+                const conversation = conversations.find(
+                  (conv) => conv.user._id === contact._id
+                );
 
-      return (
-        <ContactItem
-          key={contact._id}
-          contact={contact}
-          isActive={activeChat === contact._id}
-          isOnline={onlineUsers.includes(contact._id)}
-          lastMessage={conversation?.lastMessage?.text || "No messages yet"}
-          createdAt={conversation?.createdAt || null}
-          onClick={() => {
-            dispatch(setSelectedUser(contact));
-            onContactClick(contact._id);
-          }}
-        />
-      );
-    })}
-</div>
-
-
+                return (
+                  <ContactItem
+                    key={contact._id}
+                    contact={contact}
+                    isActive={activeChat === contact._id}
+                    isOnline={onlineUsers.includes(contact._id)}
+                    lastMessage={
+                      conversation?.lastMessage?.text || "No messages yet"
+                    }
+                    createdAt={conversation?.createdAt || null}
+                    onClick={() => {
+                      dispatch(setSelectedUser(contact));
+                      onContactClick(contact._id);
+                    }}
+                  />
+                );
+              })}
+      </div>
     </div>
   );
 };
