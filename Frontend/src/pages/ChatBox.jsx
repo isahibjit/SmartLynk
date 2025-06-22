@@ -3,14 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import profileImg from "../assets/profile-holder.webp";
 
 import { FaArrowLeft } from "react-icons/fa";
-import ChatForm from "../Components/Form.jsx"
+import ChatForm from "../Components/Form.jsx";
 import {
   setSelectedUser,
-  selectedUser,
-  sendMessage,
-  isMessageSending,
   getMessages,
   setTyping,
+  setMessagesAsSeen,
 } from "../features/chat/chatSlice";
 import { Image, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
@@ -27,14 +25,16 @@ const ChatBox = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (authUser?._id) {
+      socket.emit("join", authUser._id);
+    }
+  }, [authUser]);
+
+  useEffect(() => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
-  const [formData, setFormData] = useState({
-    text: "",
-    image: null,
-  });
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -49,6 +49,25 @@ const ChatBox = () => {
   }, [selectedUser, subscribeToMessage, dispatch]);
 
   useEffect(() => {
+    if (!selectedUser || !authUser || !messages.length) return;
+
+    const lastMessage = messages[messages.length - 1];
+
+    if (
+      lastMessage.senderId === selectedUser._id &&
+      lastMessage.receiverId === authUser._id &&
+      !lastMessage.seen
+    ) {
+      socket.emit("markAsSeen", {
+        senderId: selectedUser._id,
+        receiverId: authUser._id,
+      });
+
+      dispatch(setMessagesAsSeen(selectedUser._id));
+    }
+  }, [messages]);
+
+  useEffect(() => {
     socket.on("typing", ({ from }) => {
       if (from === selectedUser._id) {
         dispatch(setTyping(true));
@@ -60,23 +79,19 @@ const ChatBox = () => {
         dispatch(setTyping(false));
       }
     });
+
+    socket.on("messagesSeenByReceiver", ({ receiverId }) => {
+      if (receiverId === selectedUser._id) {
+        dispatch(setMessagesAsSeen(receiverId));
+      }
+    });
     return () => {
       socket.off("typing");
       socket.off("stopTyping");
+      socket.off("markAsSeen");
+      socket.off("messagesSeenByReceiver");
     };
   }, [selectedUser]);
-
-  const handleInputChange = async (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (!typing) {
-      socket.emit("typing", { to: selectedUser._id });
-    }
-    typingTimeoutRef.current = setTimeout(() => {
-      socket.emit("stopTyping", { to: selectedUser._id });
-      setTyping(false);
-    }, 2000);
-  };
 
   return (
     <div className="flex flex-col w-full h-[90vh] bg-white font-sans md:px-8 py-8   ">
