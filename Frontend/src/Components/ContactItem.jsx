@@ -1,9 +1,16 @@
 import { useSelector } from "react-redux";
 import profileImg from "../assets/profile-holder.webp";
 import TimeFormat from "../lib/TimeFormat";
-const ContactItem = ({ contact, isActive, onClick, isOnline, lastMessage, createdAt }) => {
-  const {messages} = useSelector((state => state.chat));
-    
+import { useEffect, useState } from "react";
+const ContactItem = ({
+  contact,
+  isActive,
+  onClick,
+  isOnline,
+  lastMessage,
+  createdAt,
+}) => {
+
   return (
     <div
       className={`flex items-center gap-4 px-6 py-4 border-b border-base-200 hover:bg-base-200 cursor-pointer transition-colors ${
@@ -17,6 +24,9 @@ const ContactItem = ({ contact, isActive, onClick, isOnline, lastMessage, create
             src={contact.profilePic || profileImg}
             alt={`${contact.fullname}'s avatar`}
           />
+          <span className="rounded-full w-5 h-5 absolute bg-yellow-300 hidden text-xs right-0 top-0 flex items-center justify-center">
+            2
+          </span>
         </div>
       </div>
       <div className="flex-1 relative">

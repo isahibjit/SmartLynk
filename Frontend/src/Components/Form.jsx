@@ -27,7 +27,6 @@ const Form = () => {
       const sendMessageData = { formData, id };
       try {
         await dispatch(sendMessage(sendMessageData)).unwrap();
-
         setFormData((prev) => ({ ...prev, image: "", text: "" }));
       } catch (error) {
         toast.error("Message not send !");

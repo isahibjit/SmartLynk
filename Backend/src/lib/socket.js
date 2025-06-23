@@ -28,7 +28,6 @@ io.on('connection', (socket) => {
         console.log(`Socket ${socket.id} joined room ${userId}`);
         socket.join(userId);
     })
-
     if (userId) {
         userSocketMap[userId] = socket.id
     }
@@ -58,6 +57,11 @@ io.on('connection', (socket) => {
             console.log('Error', error)
         }
 
+    })
+
+    socket.on('sendNotifications', ({ unseenMessages, senderId }) => {
+        console.log(unseenMessages)
+        io.to(senderId.toString()).emit('receiveNotifications', unseenMessages)
     })
     socket.on('disconnect', () => {
         console.log('user disconnected', socket.id)

@@ -78,7 +78,6 @@ const ChatSidebar = ({ activeChat, onContactClick }) => {
             const conversation = conversations.find(
               (conv) => conv.user._id === contact._id
             );
-
             return (
               <ContactItem
                 key={contact._id}
@@ -88,7 +87,7 @@ const ChatSidebar = ({ activeChat, onContactClick }) => {
                 lastMessage={
                   conversation?.lastMessage?.text || "No messages yet"
                 }
-                createdAt={conversation?.createdAt || null}
+                createdAt={conversation?.lastMessage.createdAt || null}
                 onClick={() => {
                   dispatch(setSelectedUser(contact));
                   onContactClick(contact._id);

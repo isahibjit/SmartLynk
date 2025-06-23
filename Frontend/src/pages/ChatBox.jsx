@@ -16,9 +16,7 @@ import TimeFormat from "../lib/TimeFormat";
 import { subscribeToMessage } from "../redux/socketActions";
 import Typing from "../Components/Typing";
 const ChatBox = () => {
-  const { selectedUser, isSelectedForMobile, messages, typing } = useSelector(
-    (state) => state.chat
-  );
+  const { selectedUser, messages, typing } = useSelector((state) => state.chat);
 
   const messageEndRef = useRef(null);
   const { authUser, socket } = useSelector((state) => state.auth);
@@ -92,7 +90,6 @@ const ChatBox = () => {
       socket.off("messagesSeenByReceiver");
     };
   }, [selectedUser]);
-
   return (
     <div className="flex flex-col w-full h-[90vh] bg-white font-sans md:px-8 py-8   ">
       {/* Header */}
