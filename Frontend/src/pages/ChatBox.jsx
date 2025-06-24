@@ -23,7 +23,7 @@ const ChatBox = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (authUser?._id) {
+    if (authUser?._id && socket.connected) {
       socket.emit("join", authUser._id);
     }
   }, [authUser]);

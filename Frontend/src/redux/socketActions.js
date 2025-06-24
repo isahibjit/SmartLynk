@@ -1,7 +1,7 @@
 
 import { io } from "socket.io-client";
 import { setOnlineUsers, setSocket } from "../features/auth/authSlice";
-import { setMessages, setTyping } from "../features/chat/chatSlice";
+import { setMessages } from "../features/chat/chatSlice";
 let socketInstance = null
 
 
