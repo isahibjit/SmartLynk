@@ -17,7 +17,7 @@ const ChatApp = () => {
   return (
     <div
     ref={homePageRef}
-      className="relative flex size-full border h-screen py-15  flex-row group/design-root "
+      className="relative flex h-screen size-full border  py-15  flex-row group/design-root "
       style={{ fontFamily: "Inter, 'Noto Sans', sans-serif" }}
     >
       <main className="flex-1 flex flex-row bg-white  w-full">

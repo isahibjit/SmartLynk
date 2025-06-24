@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaRobot } from "react-icons/fa";
 import { RiImageAddFill } from "react-icons/ri";
+import { Image, Send, X } from "lucide-react";
 import { IoSend } from "react-icons/io5";
 import {
   sendMessage,
