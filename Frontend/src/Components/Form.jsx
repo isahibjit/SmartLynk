@@ -4,14 +4,13 @@ import { FaRobot } from "react-icons/fa";
 import { RiImageAddFill } from "react-icons/ri";
 import { Image, Send, X } from "lucide-react";
 import { IoSend } from "react-icons/io5";
-import {
-  sendMessage,
-  setTyping,
-} from "../features/chat/chatSlice";
+import { sendMessage, setTyping } from "../features/chat/chatSlice";
 import { axiosInstance } from "../lib/axios";
 const Form = () => {
   const typingTimeoutRef = useRef(null);
-  const { selectedUser, messages, typing ,isMessageSending} = useSelector((state) => state.chat);
+  const { selectedUser, messages, typing, isMessageSending } = useSelector(
+    (state) => state.chat
+  );
   const { socket, authUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const inputTextRef = useRef(null);
@@ -48,11 +47,15 @@ const Form = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (!typing) {
-      socket.emit("typing", { to: selectedUser._id });
+      if (socket && socket.connected) {
+        socket.emit("typing", { to: selectedUser._id });
+      }
     }
     typingTimeoutRef.current = setTimeout(() => {
-      socket.emit("stopTyping", { to: selectedUser._id });
-      setTyping(false);
+      if (socket && socket.connected) {
+        socket.emit("stopTyping", { to: selectedUser._id });
+        setTyping(false);
+      }
     }, 2000);
   };
   const handleSuggestBtn = async (e) => {
@@ -81,7 +84,7 @@ const Form = () => {
       setSuggestLoading(false);
     }
   };
- 
+
   return (
     <form
       onSubmit={handleSubmit}
