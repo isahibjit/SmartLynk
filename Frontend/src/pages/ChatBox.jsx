@@ -23,7 +23,7 @@ const ChatBox = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (authUser?._id && socket.connected) {
+    if (authUser?._id && socket && socket.connected) {
       socket.emit("join", authUser._id);
     }
   }, [authUser]);
@@ -56,10 +56,12 @@ const ChatBox = () => {
       lastMessage.receiverId === authUser._id &&
       !lastMessage.seen
     ) {
-      socket.emit("markAsSeen", {
-        senderId: selectedUser._id,
-        receiverId: authUser._id,
-      });
+      if (socket && socket.connected) {
+        socket.emit("markAsSeen", {
+          senderId: selectedUser._id,
+          receiverId: authUser._id,
+        });
+      }
 
       dispatch(setMessagesAsSeen(selectedUser._id));
     }
