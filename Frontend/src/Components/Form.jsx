@@ -6,6 +6,7 @@ import { Image, Send, X } from "lucide-react";
 import { IoSend } from "react-icons/io5";
 import { sendMessage, setTyping } from "../features/chat/chatSlice";
 import { axiosInstance } from "../lib/axios";
+import toast from "react-hot-toast";
 const Form = () => {
   const typingTimeoutRef = useRef(null);
   const { selectedUser, messages, typing, isMessageSending } = useSelector(
@@ -59,7 +60,10 @@ const Form = () => {
     }, 2000);
   };
   const handleSuggestBtn = async (e) => {
-    if (!messages) return;
+    if (!messages) {
+      toast.error("You haven't started the convo yet")
+      return
+    }
     setSuggestLoading(true);
     const prompt = messages
       .slice(-10)
