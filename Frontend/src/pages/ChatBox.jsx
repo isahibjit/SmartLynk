@@ -173,7 +173,7 @@ const ChatBox = () => {
                         <figure>
                           <img src={message.image} alt="Shoes" />
                         </figure>
-                        <div className="card-body">
+                        <div className="py-1 px-2 rounded shadow">
                           <p>{message.text}</p>
                         </div>
                       </div>
