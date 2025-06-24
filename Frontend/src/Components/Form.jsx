@@ -6,13 +6,12 @@ import { Image, Send, X } from "lucide-react";
 import { IoSend } from "react-icons/io5";
 import {
   sendMessage,
-  isMessageSending,
   setTyping,
 } from "../features/chat/chatSlice";
 import { axiosInstance } from "../lib/axios";
 const Form = () => {
   const typingTimeoutRef = useRef(null);
-  const { selectedUser, messages, typing } = useSelector((state) => state.chat);
+  const { selectedUser, messages, typing ,isMessageSending} = useSelector((state) => state.chat);
   const { socket, authUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const inputTextRef = useRef(null);
