@@ -5,7 +5,7 @@ import { setMessages } from "../features/chat/chatSlice";
 let socketInstance = null
 
 
-export const connectSocket = () => (dispatch, getState) => {
+export const connectSocket = () => async(dispatch, getState) => {
     const { authUser } = getState().auth
     if (!authUser || socketInstance?.connected) return
     socketInstance = io(import.meta.env.BACKEND_URL, {
@@ -15,9 +15,13 @@ export const connectSocket = () => (dispatch, getState) => {
         },
         withCredentials : true,
     })
-    socketInstance.on('connect', () => {
-        dispatch(setSocket(socketInstance))
-    })
+    await new Promise((resolve) => {
+    socketInstance.on("connect", () => {
+      dispatch(setSocket(socketInstance));
+      resolve();
+    });
+  });
+
     socketInstance.on('getOnlineUsers', (userIds) => {
         dispatch(setOnlineUsers(userIds))
 

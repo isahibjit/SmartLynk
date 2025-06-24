@@ -27,9 +27,11 @@ function App() {
     dispatch(checkAuth());
   }, [dispatch]);
   useEffect(() => {
-    if (authUser) {
-      dispatch(connectSocket());
-    }
+    if (!authUser) return;
+
+    (async () => {
+      await dispatch(connectSocket());
+    })();
   }, [authUser, dispatch]);
 
   const router = createBrowserRouter([
@@ -42,8 +44,8 @@ function App() {
           element: authUser ? <HomePage /> : <Navigate to="/login" />,
         },
         {
-          path : "/setting",
-          element : authUser ?  <ThemeSetting /> : <Navigate to="/login" />
+          path: "/setting",
+          element: authUser ? <ThemeSetting /> : <Navigate to="/login" />,
         },
         {
           path: "/signup",
