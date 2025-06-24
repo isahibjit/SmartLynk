@@ -8,7 +8,7 @@ let socketInstance = null
 export const connectSocket = () => async(dispatch, getState) => {
     const { authUser } = getState().auth
     if (!authUser || socketInstance?.connected) return
-    socketInstance = io(import.meta.env.BACKEND_URL, {
+    socketInstance = io(import.meta.env.VITE_BACKEND_URL, {
 
         query: {
             userId: authUser._id
