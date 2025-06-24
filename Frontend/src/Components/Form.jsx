@@ -60,10 +60,11 @@ const Form = () => {
     }, 2000);
   };
   const handleSuggestBtn = async (e) => {
-    if (!messages) {
+    if (!messages || messages.length === 0) {
       toast.error("You haven't started the convo yet")
       return
     }
+    
     setSuggestLoading(true);
     const prompt = messages
       .slice(-10)
