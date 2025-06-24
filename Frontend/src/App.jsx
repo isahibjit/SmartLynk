@@ -43,7 +43,7 @@ function App() {
         },
         {
           path : "/setting",
-          element : authUser ? <ThemeSetting /> : <Navigate to="/login" />
+          element : authUser ?  <ThemeSetting /> : <Navigate to="/login" />
         },
         {
           path: "/signup",

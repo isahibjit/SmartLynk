@@ -3,9 +3,7 @@ import React from 'react'
 const SidebarSkeleton = () => {
   return (
     <div
-  className={`md:max-w-[30vw] w-full
-    ${selectedUser && "hidden"}
-    md:flex flex-col border-r border-base-300 overflow-y-auto animate-pulse`}
+  className={"md:max-w-[30vw] w-full  md:flex flex-col border-r border-base-300 overflow-y-auto animate-pulse"}
 >
   {/* Header Skeleton */}
   <div className="p-6 border-b border-base-300 shrink-0">

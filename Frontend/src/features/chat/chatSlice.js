@@ -72,16 +72,10 @@ const chatSlice = createSlice({
             })
 
             // conversations
-            .addCase(getConversations.pending, (state) => {
-                state.isUserLoading = true;
-            })
             .addCase(getConversations.fulfilled, (state, action) => {
-                state.isUserLoading = false;
                 state.conversations = action.payload
             })
-            .addCase(getConversations.rejected, (state) => {
-                state.isUserLoading = false
-            })
+            
     }
 })
 export const { setSelectedUser, selectedUser, messages, setTyping, setMessages, isMessageSending, setMessagesAsSeen } = chatSlice.actions
