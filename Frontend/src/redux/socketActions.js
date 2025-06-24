@@ -12,7 +12,8 @@ export const connectSocket = () => (dispatch, getState) => {
 
         query: {
             userId: authUser._id
-        }
+        },
+        withCredentials : true,
     })
     socketInstance.on('connect', () => {
         dispatch(setSocket(socketInstance))
