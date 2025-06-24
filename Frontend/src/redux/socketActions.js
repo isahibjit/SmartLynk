@@ -8,7 +8,7 @@ let socketInstance = null
 export const connectSocket = () => (dispatch, getState) => {
     const { authUser } = getState().auth
     if (!authUser || socketInstance?.connected) return
-    socketInstance = io('http://localhost:5000', {
+    socketInstance = io(import.meta.env.BACKEND_URL, {
 
         query: {
             userId: authUser._id
