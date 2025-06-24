@@ -91,7 +91,7 @@ const ChatBox = () => {
     };
   }, [selectedUser]);
   return (
-    <div className="flex flex-col w-full h-[90vh] bg-white font-sans md:px-8 py-8   ">
+    <div className="flex flex-col w-full md:h-[87vh] h-[93vh] bg-white font-sans md:px-8 py-8   ">
       {/* Header */}
       {/* Chat Title */}
       <div className="px-8 py-5 border border-gray-200 bg-slate-100 rounded-md flex space-x-2 justify-center items-center sticky top-0">

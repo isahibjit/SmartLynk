@@ -85,7 +85,7 @@ const Form = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex  gap-3 my-2 sticky bg-white bottom-2 px-2 pt-3 relative"
+      className="flex  gap-3 mt-2 sticky bg-white bottom-2 px-2 pt-3 relative"
     >
       <input
         type="text"

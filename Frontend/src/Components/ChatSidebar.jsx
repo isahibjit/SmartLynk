@@ -28,7 +28,7 @@ const ChatSidebar = ({ activeChat, onContactClick }) => {
 
   return (
     <div
-      className={`md:w-[30vw] w-full
+      className={`md:max-w-[30vw] w-full
     ${selectedUser && "hidden"}
     md:flex flex-col border-r border-base-300   overflow-y-auto`}
     >
