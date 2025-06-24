@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const themeSlice = createSlice({
     name : "theme",
     initialState : {
-        theme : localStorage.getItem('chat-theme') || ""
+        theme : localStorage.getItem('chat-theme') || "cupcake"
     },
     reducers : {
         setTheme :(state,action)=>{
