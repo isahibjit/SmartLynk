@@ -58,7 +58,7 @@ const Navbar = () => {
               <li>
                 <button
                   onClick={handleLogout}
-                  className="text-lg text-primary btn border border-black"
+                  className="text-lg text-base-content btn border border-black"
                 >
                   {!isSigningOut ? (
                     <span>Logout</span>
@@ -71,9 +71,11 @@ const Navbar = () => {
                 </button>
               </li>
               <li className="my-2">
-                <a className="text-lg btn  text-secondary border border-black">
+                <Link
+                to={"/setting"}
+                className="text-lg btn  text-base-content border border-black">
                   Themes
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

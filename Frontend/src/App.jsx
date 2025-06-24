@@ -16,11 +16,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./features/auth/authSlice";
 import HomePage from "./pages/HomePage";
 import { connectSocket } from "./redux/socketActions";
+import ThemeSetting from "./pages/ThemeSetting";
 
 function App() {
   const dispatch = useDispatch();
   const { authUser, isSigningUp, isLoggingIn, isCheckingAuth, onlineUsers } =
     useSelector((state) => state.auth);
+
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch]);
@@ -38,6 +40,10 @@ function App() {
         {
           path: "/",
           element: authUser ? <HomePage /> : <Navigate to="/login" />,
+        },
+        {
+          path : "/setting",
+          element : authUser ? <ThemeSetting /> : <Navigate to="/login" />
         },
         {
           path: "/signup",
