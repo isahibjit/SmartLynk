@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import profileImg from "../assets/profile-holder.webp";
-
+import { safeEmit } from "../lib/safeEmit.js";
 import { FaArrowLeft } from "react-icons/fa";
 import ChatForm from "../Components/Form.jsx";
 import {
@@ -56,18 +56,19 @@ const ChatBox = () => {
       lastMessage.receiverId === authUser._id &&
       !lastMessage.seen
     ) {
-      if (socket && socket.connected) {
-        socket.emit("markAsSeen", {
-          senderId: selectedUser._id,
-          receiverId: authUser._id,
-        });
-      }
+      safeEmit(socket, "markAsSeen", {
+        senderId: selectedUser._id,
+        receiverId: authUser._id,
+      });
 
       dispatch(setMessagesAsSeen(selectedUser._id));
     }
   }, [messages]);
 
   useEffect(() => {
+    if (!socket || !socket.connected || !selectedUser) return;
+
+    
     socket.on("typing", ({ from }) => {
       if (from === selectedUser._id) {
         dispatch(setTyping(true));
