@@ -133,6 +133,7 @@ const Form = () => {
           onClick={handleSuggestBtn}
           className="btn btn-secondary flex items-center gap-1 sm:w-[100px]"
           type="button"
+          disabled={suggestLoading}
         >
           {!suggestLoading ? (
             <div className="flex items-center gap-2">
