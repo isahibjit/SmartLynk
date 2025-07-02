@@ -120,7 +120,7 @@ const ChatBox = () => {
 
       {/* YOu'll need to run a loop here  */}
       {/* Messages */}
-      <div className="flex-1  mt-3 px-2  overflow-y-scroll">
+      <div className="flex-1  mt-3 px-2  overflow-y-auto overflow-x-hidden">
         {messages.length > 0
           ? messages.map((message, index) => (
               <div ref={messageEndRef} key={index}>
