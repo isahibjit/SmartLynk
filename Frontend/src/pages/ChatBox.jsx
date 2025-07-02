@@ -180,12 +180,12 @@ const ChatBox = () => {
                       className="w-full h-auto object-cover"
                     />
                   </figure>
-                  <div className="py-1 px-2 rounded shadow break-words">
+                  <div className="py-1 px-2 rounded shadow break-all">
                     <p>{message.text}</p>
                   </div>
                 </div>
               ) : (
-                <div className="chat-bubble max-w-[75%] break-words">
+                <div className="chat-bubble max-w-[75%] break-all">
                   {message.text}
                 </div>
               )}
