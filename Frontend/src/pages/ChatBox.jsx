@@ -120,81 +120,87 @@ const ChatBox = () => {
 
       {/* YOu'll need to run a loop here  */}
       {/* Messages */}
-      <div className="flex-1  mt-3 px-2  overflow-y-auto overflow-x-hidden">
-        {messages.length > 0
-          ? messages.map((message, index) => (
-              <div ref={messageEndRef} key={index}>
-                {message.senderId === selectedUser._id ? (
-                  <div className="chat chat-start">
-                    <div className="chat-image avatar">
-                      <div className="w-10 rounded-full">
-                        <img
-                          src={selectedUser.profilePic || profileImg}
-                          alt={`${selectedUser.fullname}'s Avatar`}
-                        />
-                      </div>
-                    </div>
-                    <div className="chat-header">
-                      {selectedUser.fullname}
-                      <time className="text-xs opacity-50">
-                        {TimeFormat(message.createdAt)}
-                      </time>
-                    </div>
-                    <div className="chat-bubble">
-                      {message.image && (
-                        <div className="w-[150px] h-[150px] left-[10px] avatar rounded-lg">
-                          <img
-                            src={message.image}
-                            alt="Selected"
-                            className="rounded"
-                          />
-                        </div>
-                      )}
-                      <span className="block">{message.text}</span>
-                    </div>
-                    <div className="chat-footer opacity-50">Delivered</div>
-                  </div>
-                ) : (
-                  <div className="chat chat-end">
-                    <div className="chat-image avatar">
-                      <div className="w-10 rounded-full">
-                        <img
-                          src={authUser.profilePic || profileImg}
-                          alt={`${authUser.fullname}'s Avatar`}
-                        />
-                      </div>
-                    </div>
-                    <div className="chat-header">
-                      {authUser.fullname}
-                      <time className="text-xs opacity-50">
-                        {TimeFormat(message.createdAt)}
-                      </time>
-                    </div>
-
-                    {message.image ? (
-                      <div className="card bg-base-100 w-38 shadow-sm">
-                        <figure>
-                          <img src={message.image} alt="Shoes" />
-                        </figure>
-                        <div className="py-1 px-2 rounded shadow">
-                          <p>{message.text}</p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="chat-bubble">{message.text}</div>
-                    )}
-
-                    <div className="chat-footer opacity-50">
-                      {message.seen && "Seen"}
-                    </div>
+ <div className="flex-1 w-full mt-3 px-2 overflow-y-auto overflow-x-hidden">
+  {messages.length > 0
+    ? messages.map((message, index) => (
+        <div ref={messageEndRef} key={index}>
+          {message.senderId === selectedUser._id ? (
+            <div className="chat chat-start">
+              <div className="chat-image avatar">
+                <div className="w-10 rounded-full">
+                  <img
+                    src={selectedUser.profilePic || profileImg}
+                    alt={`${selectedUser.fullname}'s Avatar`}
+                  />
+                </div>
+              </div>
+              <div className="chat-header">
+                {selectedUser.fullname}
+                <time className="text-xs opacity-50">
+                  {TimeFormat(message.createdAt)}
+                </time>
+              </div>
+              <div className="chat-bubble max-w-[75%] break-words">
+                {message.image && (
+                  <div className="w-[150px] h-[150px] avatar rounded-lg overflow-hidden mb-2">
+                    <img
+                      src={message.image}
+                      alt="Selected"
+                      className="rounded w-full h-full object-cover"
+                    />
                   </div>
                 )}
+                <span className="block">{message.text}</span>
               </div>
-            ))
-          : null}
+              <div className="chat-footer opacity-50">Delivered</div>
+            </div>
+          ) : (
+            <div className="chat chat-end">
+              <div className="chat-image avatar">
+                <div className="w-10 rounded-full">
+                  <img
+                    src={authUser.profilePic || profileImg}
+                    alt={`${authUser.fullname}'s Avatar`}
+                  />
+                </div>
+              </div>
+              <div className="chat-header">
+                {authUser.fullname}
+                <time className="text-xs opacity-50">
+                  {TimeFormat(message.createdAt)}
+                </time>
+              </div>
 
-        <div>{typing && <Typing />}</div>
-      </div>
+              {message.image ? (
+                <div className="card bg-base-100 shadow-sm max-w-[75%]">
+                  <figure className="max-w-full overflow-hidden">
+                    <img
+                      src={message.image}
+                      alt="Message"
+                      className="w-full h-auto object-cover"
+                    />
+                  </figure>
+                  <div className="py-1 px-2 rounded shadow break-words">
+                    <p>{message.text}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="chat-bubble max-w-[75%] break-words">
+                  {message.text}
+                </div>
+              )}
+
+              <div className="chat-footer opacity-50">
+                {message.seen && "Seen"}
+              </div>
+            </div>
+          )}
+        </div>
+      ))
+    : null}
+
+  <div>{typing && <Typing />}</div>
+</div>
 
       {/* Input Box */}
 
